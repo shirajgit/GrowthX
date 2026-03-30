@@ -3,8 +3,9 @@
 import { useState } from "react";
 import { Menu } from "lucide-react";
 import { motion } from "framer-motion";
+import { ReactNode } from "react";
 
-export default function DashboardLayout({ children }) {
+export default function DashboardLayout({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(true);
 
   const menuItems = [
