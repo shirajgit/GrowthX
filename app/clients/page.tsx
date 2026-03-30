@@ -45,11 +45,11 @@ export default function ClientsPage() {
     setForm({ name: "", company: "", email: "", status: "active" });
   };
 
-  const deleteClient = (id) => {
+  const deleteClient = (id : number) => {
     setClients(clients.filter((c) => c.id !== id));
   };
 
-  const statusColor = (status) => {
+  const statusColor = (status : string) => {
     switch (status) {
       case "active":
         return "bg-green-500/20 text-green-400";

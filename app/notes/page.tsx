@@ -34,7 +34,7 @@ export default function NotesPage() {
     setForm({ title: "", content: "" });
   };
 
-  const deleteNote = (id) => {
+  const deleteNote = (id :number) => {
     setNotes(notes.filter((n) => n.id !== id));
   };
 

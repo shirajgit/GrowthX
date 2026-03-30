@@ -49,11 +49,11 @@ export default function LeadsPage() {
     setForm({ name: "", source: "", contact: "", status: "new", work: "" });
   };
 
-  const deleteLead = (id) => {
+  const deleteLead = (id : number) => {
     setLeads(leads.filter((l) => l.id !== id));
   };
 
-  const statusColor = (status) => {
+  const statusColor = (status : string) => {
     switch (status) {
       case "new":
         return "bg-blue-500/20 text-blue-400";

@@ -41,11 +41,11 @@ export default function JobsPage() {
     setForm({ company: "", role: "", status: "applied" });
   };
 
-  const deleteJob = (id) => {
+  const deleteJob = (id : number) => {
     setJobs(jobs.filter((job) => job.id !== id));
   };
 
-  const statusColor = (status) => {
+  const statusColor = (status : string) => {
     switch (status) {
       case "applied":
         return "bg-blue-500/20 text-blue-400";
