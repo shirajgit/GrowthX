@@ -1,26 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Plus, Trash2 } from "lucide-react";
 
-export default function ClientsPage() {
-  const [clients, setClients] = useState([
-    {
-      id: 1,
-      name: "John Doe",
-      company: "ABC Corp",
-      email: "john@example.com",
-      status: "active",
-    },
-    {
-      id: 2,
-      name: "Sarah Khan",
-      company: "StartupX",
-      email: "sarah@example.com",
-      status: "pending",
-    },
-  ]);
+type Client = {
+  _id: string;
+  name: string;
+  company: string;
+  email: string;
+  status: string;
+  createdAt?: string;
+  updatedAt?: string;
+};
 
+export default function ClientsPage() {
+  const [clients, setClients] = useState<Client[]>([]);
   const [form, setForm] = useState({
     name: "",
     company: "",
@@ -28,28 +22,58 @@ export default function ClientsPage() {
     status: "active",
   });
 
-  const addClient = () => {
+  const fetchClients = async () => {
+    const res = await fetch("/api/clients");
+    const data = await res.json();
+    setClients(data);
+  };
+
+  useEffect(() => {
+    fetchClients();
+  }, []);
+
+  // ✅ Smart Time (AM/PM)
+  const formatTime = (dateString?: string) => {
+    if (!dateString) return "";
+
+    const date = new Date(dateString);
+
+    return date.toLocaleString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+      day: "2-digit",
+      month: "short",
+    });
+  };
+
+  const addClient = async () => {
     if (!form.name.trim()) return;
 
-    setClients([
-      ...clients,
-      {
-        id: Date.now(),
-        name: form.name,
-        company: form.company,
-        email: form.email,
-        status: form.status,
+    const res = await fetch("/api/clients", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
       },
-    ]);
+      body: JSON.stringify(form),
+    });
+
+    const newClient = await res.json();
+
+    setClients((prev) => [newClient, ...prev]);
 
     setForm({ name: "", company: "", email: "", status: "active" });
   };
 
-  const deleteClient = (id : number) => {
-    setClients(clients.filter((c) => c.id !== id));
+  const deleteClient = async (id: string) => {
+    await fetch(`/api/clients/${id}`, {
+      method: "DELETE",
+    });
+
+    setClients((prev) => prev.filter((c) => c._id !== id));
   };
 
-  const statusColor = (status : string) => {
+  const statusColor = (status: string) => {
     switch (status) {
       case "active":
         return "bg-green-500/20 text-green-400";
@@ -63,80 +87,95 @@ export default function ClientsPage() {
   };
 
   return (
-    <div className="min-h-screen   text-white p-6">
-      {/* Header */}
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Clients</h1>
-      </div>
+    <div className="min-h-screen text-white p-4 sm:p-6">
+      <h1 className="text-4xl font-bold mb-8">Clients</h1>
 
-      {/* Add Client */}
-      <div className="grid md:grid-cols-4 gap-3 mb-6">
+      {/* Input */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         <input
           value={form.name}
           onChange={(e) => setForm({ ...form, name: e.target.value })}
           placeholder="Client Name"
-          className="px-4 py-3 rounded-xl bg-gray-900 border border-gray-700"
+          className="px-4 py-3 rounded-2xl bg-gray-900 border border-gray-700 text-base"
         />
         <input
           value={form.company}
           onChange={(e) => setForm({ ...form, company: e.target.value })}
           placeholder="Company"
-          className="px-4 py-3 rounded-xl bg-gray-900 border border-gray-700"
+          className="px-4 py-3 rounded-2xl bg-gray-900 border border-gray-700 text-base"
         />
         <input
           value={form.email}
           onChange={(e) => setForm({ ...form, email: e.target.value })}
           placeholder="Email"
-          className="px-4 py-3 rounded-xl bg-gray-900 border border-gray-700"
+          className="px-4 py-3 rounded-2xl bg-gray-900 border border-gray-700 text-base"
         />
         <select
           value={form.status}
           onChange={(e) => setForm({ ...form, status: e.target.value })}
-          className="px-4 py-3 rounded-xl bg-gray-900 border border-gray-700"
+          className="px-4 py-3 rounded-2xl bg-gray-900 border border-gray-700 text-base"
         >
           <option value="active">Active</option>
           <option value="pending">Pending</option>
           <option value="inactive">Inactive</option>
         </select>
+
         <button
           onClick={addClient}
-          className="bg-white text-black px-4 py-3 rounded-xl flex items-center justify-center gap-2 col-span-full md:col-span-1"
+          className="bg-white text-black px-4 py-3 rounded-2xl w-full md:w-auto hover:scale-105 transition"
         >
           <Plus size={18} /> Add
         </button>
       </div>
 
-      {/* Clients Table */}
-      <div className="bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden">
-        <table className="w-full text-sm">
-          <thead className="bg-gray-800 text-gray-400">
+      {/* Table */}
+      <div className="bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden overflow-x-auto">
+        <table className="min-w-[700px] w-full text-base">
+          <thead className="bg-gray-800 text-gray-400 text-sm uppercase tracking-wide">
             <tr>
-              <th className="text-left p-4">Name</th>
-              <th className="text-left p-4">Company</th>
-              <th className="text-left p-4">Email</th>
-              <th className="text-left p-4">Status</th>
-              <th className="text-right p-4">Action</th>
+              <th className="text-left p-5">Name</th>
+              <th className="text-left p-5">Company</th>
+              <th className="text-left p-5">Email</th>
+              <th className="text-left p-5">Status</th>
+              <th className="text-left p-5">Time</th>
+              <th className="text-right p-5">Action</th>
             </tr>
           </thead>
           <tbody>
             {clients.map((client) => (
-              <tr key={client.id} className="border-t border-gray-800">
-                <td className="p-4">{client.name}</td>
-                <td className="p-4">{client.company}</td>
-                <td className="p-4">{client.email}</td>
-                <td className="p-4">
+              <tr
+                key={client._id}
+                className="border-t border-gray-800 hover:bg-gray-800/50 transition"
+              >
+                <td className="p-5 font-medium">{client.name}</td>
+                <td className="p-5 text-gray-300">{client.company}</td>
+                <td className="p-5 text-gray-400">{client.email}</td>
+
+                <td className="p-5">
                   <span
-                    className={`px-3 py-1 rounded-full text-xs ${statusColor(
+                    className={`px-4 py-1.5 rounded-full text-sm font-medium ${statusColor(
                       client.status
                     )}`}
                   >
                     {client.status}
                   </span>
                 </td>
-                <td className="p-4 text-right">
+
+                <td className="p-5 text-sm text-gray-400">
+                  {client.createdAt && (
+                    <div>🕒 {formatTime(client.createdAt)}</div>
+                  )}
+                  {client.updatedAt && (
+                    <div className="text-green-400">
+                      ✏️ {formatTime(client.updatedAt)}
+                    </div>
+                  )}
+                </td>
+
+                <td className="p-5 text-right">
                   <button
-                    onClick={() => deleteClient(client.id)}
-                    className="text-red-500"
+                    onClick={() => deleteClient(client._id)}
+                    className="text-red-500 hover:scale-110 transition"
                   >
                     <Trash2 size={18} />
                   </button>
