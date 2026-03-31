@@ -83,7 +83,7 @@ export default function RootLayout({
         </motion.aside>
 
         {/* Main Content */}
-        <main className="flex-1 p-6 overflow-y-auto">{children}</main>
+        <main className="flex-1  overflow-y-auto">{children}</main>
       </body>
     </html>
   );
