@@ -1,16 +1,16 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/db";
 import Leads from "@/models/Leads";
 
 // ================= DELETE LEAD =================
 export async function DELETE(
-  req: Request,
-  { params }: { params: { id: string } }
+  req: NextRequest,
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
     await connectDB();
 
-    const { id } = params;
+    const { id } = await context.params; // ✅ FIX
 
     const deletedLead = await Leads.findByIdAndDelete(id);
 
@@ -37,13 +37,13 @@ export async function DELETE(
 
 // ================= UPDATE LEAD =================
 export async function PUT(
-  req: Request,
-  { params }: { params: { id: string } }
+  req: NextRequest,
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
     await connectDB();
 
-    const { id } = params;
+    const { id } = await context.params; // ✅ FIX
     const body = await req.json();
 
     if (!body || Object.keys(body).length === 0) {
