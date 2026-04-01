@@ -35,7 +35,7 @@ export async function PUT(
     );
 
     return NextResponse.json(updatedProject);
-  } catch (error) {
+  } catch ( error) {
     return NextResponse.json(
       { error: "Failed to update project" },
       { status: 500 }

@@ -22,8 +22,10 @@ export default function SettingsPage() {
     setTheme(data.theme);
   };
 
-  useEffect(() => {
-    fetchSettings();
+ useEffect(() => {
+    (async () => {
+      await fetchSettings();
+    })();
   }, []);
 
   // 🔹 Save settings

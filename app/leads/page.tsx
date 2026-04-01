@@ -42,8 +42,10 @@ export default function LeadsPage() {
     setLoading(false);
   };
 
-  useEffect(() => {
-    fetchLeads();
+useEffect(() => {
+    (async () => {
+      await fetchLeads();
+    })();
   }, []);
 
   // ➕ Add
@@ -112,10 +114,10 @@ export default function LeadsPage() {
 
       {/* ADD FORM */}
       <div className="grid md:grid-cols-6 gap-3 mb-6">
-        {["name", "company", "email", "phone", "work"].map((f) => (
+        {(["name", "company", "email", "phone", "work"] as const).map((f) => (
           <input
             key={f}
-            value={(form as any)[f]}
+            value={form[f]}
             onChange={(e) =>
               setForm({ ...form, [f]: e.target.value })
             }

@@ -9,6 +9,11 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
+interface Project {
+  name: string;
+  createdAt?: string;
+}
+
 export default function DashboardLayout() {
   const [stats, setStats] = useState([
     { title: "Tasks Today", value: 0 },
@@ -17,8 +22,8 @@ export default function DashboardLayout() {
     { title: "Clients", value: 0 },
   ]);
 
-  const [chartData, setChartData] = useState<any[]>([]);
-  const [projects, setProjects] = useState<any[]>([]);
+  const [chartData, setChartData] = useState<{ day: string | number; tasks: number; projects: number; jobs: number; clients: number; total: number }[]>([]);
+  const [projects, setProjects] = useState<Project[]>([]);
   const [activities, setActivities] = useState<string[]>([]);
   const [suggestions, setSuggestions] = useState<string[]>([]);
 
@@ -51,7 +56,7 @@ export default function DashboardLayout() {
       setStats([
         {
           title: "Tasks Today",
-          value: tasks.filter((t: any) => t.status !== "done").length,
+          value: tasks.filter((t: { status: string }) => t.status !== "done").length,
         },
         { title: "Projects", value: projectsData.length },
         { title: "Jobs", value: jobs.length },
@@ -60,7 +65,7 @@ export default function DashboardLayout() {
 
       // 📊 Chart
       const days = range === "7d" ? 7 : 30;
-      const data: any[] = [];
+      const data: { day: string | number; tasks: number; projects: number; jobs: number; clients: number; total: number }[] = [];
 
       let prevTotal = 0;
       let currentTotal = 0;
@@ -71,19 +76,19 @@ export default function DashboardLayout() {
 
         const dateStr = d.toISOString().split("T")[0];
 
-        const t = tasks.filter((x: any) =>
+        const t = tasks.filter((x: { createdAt?: string }) =>
           x.createdAt?.startsWith(dateStr)
         ).length;
 
-        const p = projectsData.filter((x: any) =>
+        const p = projectsData.filter((x: { createdAt?: string }) =>
           x.createdAt?.startsWith(dateStr)
         ).length;
 
-        const j = jobs.filter((x: any) =>
+        const j = jobs.filter((x: { createdAt?: string }) =>
           x.createdAt?.startsWith(dateStr)
         ).length;
 
-        const c = clients.filter((x: any) =>
+        const c = clients.filter((x : { createdAt?: string }) =>
           x.createdAt?.startsWith(dateStr)
         ).length;
 
@@ -134,7 +139,7 @@ export default function DashboardLayout() {
       const sugg: string[] = [];
 
       const pending = tasks.filter(
-        (t: any) => t.status !== "done"
+        (t: { status: string }) => t.status !== "done"
       );
 
       if (pending.length > 5)
@@ -175,7 +180,7 @@ export default function DashboardLayout() {
           {["7d", "30d"].map((r) => (
             <button
               key={r}
-              onClick={() => setRange(r as any)}
+              onClick={() => setRange(r as "7d" | "30d")}
               className={`px-3 py-1 rounded ${
                 range === r ? "bg-white text-black" : "bg-gray-800"
               }`}

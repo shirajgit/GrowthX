@@ -23,8 +23,10 @@ export default function NotesPage() {
     setNotes(data);
   };
 
-  useEffect(() => {
-    fetchNotes();
+useEffect(() => {
+    (async () => {
+      await fetchNotes();
+    })();
   }, []);
 
   // ✅ Smart Time

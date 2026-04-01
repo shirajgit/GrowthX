@@ -30,7 +30,9 @@ export default function JobsPage() {
   };
 
   useEffect(() => {
-    fetchJobs();
+    (async () => {
+      await fetchJobs();
+    })();
   }, []);
 
   // ✅ Smart Time

@@ -29,7 +29,9 @@ export default function ClientsPage() {
   };
 
   useEffect(() => {
-    fetchClients();
+    (async () => {
+      await fetchClients();
+    })();
   }, []);
 
   // ✅ Smart Time (AM/PM)

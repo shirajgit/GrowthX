@@ -29,8 +29,10 @@ export default function ProjectsPage() {
     setProjects(data);
   };
 
-  useEffect(() => {
-    fetchProjects();
+ useEffect(() => {
+    (async () => {
+      await fetchProjects();
+    })();
   }, []);
 
   // ✅ Time formatter

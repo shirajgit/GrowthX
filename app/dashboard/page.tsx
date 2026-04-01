@@ -1,22 +1,9 @@
 "use client";
 
-import { useState } from "react";
-import { Menu } from "lucide-react";
-import { motion } from "framer-motion";
+ 
 
 export default function DashboardLayout() {
-  const [open, setOpen] = useState(true);
-
-  const menuItems = [
-    "Dashboard",
-    "Tasks",
-    "Projects",
-    "Jobs",
-    "Clients",
-    "Leads",
-    "Notes",
-    "Settings",
-  ];
+  
 
   const stats = [
     { title: "Tasks Today", value: 5 },
