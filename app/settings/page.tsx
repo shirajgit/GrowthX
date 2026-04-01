@@ -48,7 +48,7 @@ export default function SettingsPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-950 text-white p-6">
-      <h1 className="text-3xl font-bold mb-6">Settings</h1>
+      <h1 className="text-3xl mt-12 lg:mt-1 font-bold mb-6">Settings</h1>
 
       {/* Profile */}
       <div className="bg-gray-900 p-5 rounded-2xl mb-6">

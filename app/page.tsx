@@ -173,8 +173,8 @@ export default function DashboardLayout() {
     <div className="min-h-screen text-white p-6 bg-gradient-to-br from-black via-gray-900 to-black">
 
       {/* HEADER */}
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Dashboard</h1>
+      <div className="flex mt-14 lg:mt-1 justify-between items-center mb-6">
+        <h1 className="text-3xl  font-bold">Dashboard</h1>
 
         <div className="flex gap-2">
           {["7d", "30d"].map((r) => (

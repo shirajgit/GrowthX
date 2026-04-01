@@ -40,7 +40,10 @@ export default function Sidebar() {
         bg-gradient-to-r from-[#0f172a] to-[#111827] 
         border-b border-[#2a2a2a] p-4 flex justify-between items-center backdrop-blur-lg">
         
-        <h1 className="font-semibold text-white">Dashboard</h1>
+        <h1 className="text-3xl md:text-4xl font-bold text-white tracking-wide 
+  drop-shadow-[0_0_10px_rgba(59,130,246,0.7)]">
+  GrowthX
+</h1>
 
         <button onClick={() => setMobileOpen(true)} className="text-gray-300">
           <Menu />

@@ -131,7 +131,7 @@ export default function JobsPage() {
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-950 text-white p-6">
       
       {/* Header */}
-      <h1 className="text-4xl font-bold mb-8">💼 Job Applications</h1>
+      <h1 className="text-4xl mt-12 lg:mt-1 font-bold mb-8">💼 Job Applications</h1>
 
       {/* Input */}
       <div className="grid md:grid-cols-4 gap-3 mb-8">

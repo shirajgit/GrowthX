@@ -21,8 +21,10 @@ export default function TasksPage() {
     setTasks(data);
   };
 
-  useEffect(() => {
-    fetchTasks();
+ useEffect(() => {
+    (async () => {
+      await fetchTasks();
+    })();
   }, []);
 
   // ✅ Smart Time Formatter
@@ -106,7 +108,7 @@ export default function TasksPage() {
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-950 text-white p-6">
       
       {/* Header */}
-      <div className="flex justify-between items-center mb-8">
+      <div className="flex mt-12 lg:mt-1 justify-between items-center mb-8">
         <h1 className="text-4xl font-bold tracking-tight">
           🧠 Tasks Manager
         </h1>

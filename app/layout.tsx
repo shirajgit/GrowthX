@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Dashboard",
-  description: "Modern dashboard app",
+  title: "GrowthX ",
+  description: "An AI-powered growth dashboard to track and optimize your business metrics.",
 };
 
 export default function RootLayout({
