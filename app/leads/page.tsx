@@ -107,7 +107,7 @@ export default function LeadsPage() {
   });
 
   return (
-    <div className="min-h-screen text-white p-6">
+    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-950 text-white p-6">
       <h1 className="text-3xl font-bold mb-6">Leads</h1>
 
       {/* ADD FORM */}
@@ -139,9 +139,9 @@ export default function LeadsPage() {
 
         <button
           onClick={addLead}
-          className="bg-white text-black px-4 py-3 rounded-xl col-span-full md:col-span-1"
+          className="bg-white text-sm font-bold text-black px-4 py-3 rounded-xl col-span-full md:col-span-1"
         >
-          <Plus size={18} /> Add
+           + Add
         </button>
       </div>
 
@@ -153,12 +153,12 @@ export default function LeadsPage() {
           onChange={(e) => setSearch(e.target.value)}
           className="px-4 py-2 bg-gray-900 border border-gray-700 rounded-xl"
         />
-
+ 
         <select
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
-          className="px-4 py-2 bg-gray-900 border border-gray-700 rounded-xl"
-        >
+          className="px-1 py-2 bg-gray-900 border border-gray-700 rounded-xl"
+        > 
           <option value="all">All</option>
           <option value="new">New</option>
           <option value="contacted">Contacted</option>

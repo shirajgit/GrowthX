@@ -87,8 +87,8 @@ export default function ClientsPage() {
   };
 
   return (
-    <div className="min-h-screen text-white p-4 sm:p-6">
-      <h1 className="text-4xl font-bold mb-8">Clients</h1>
+    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-950 text-white p-4 sm:p-6">
+      <h1 className="text-4xl mt-10 font-bold mb-8">Clients</h1>
 
       {/* Input */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-8">
@@ -129,9 +129,9 @@ export default function ClientsPage() {
       </div>
 
       {/* Table */}
-      <div className="bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden overflow-x-auto">
+      <div className="bg-gray-900 border hidden md:block border-gray-800 rounded-2xl overflow-hidden overflow-x-auto">
         <table className="min-w-[700px] w-full text-base">
-          <thead className="bg-gray-800 text-gray-400 text-sm uppercase tracking-wide">
+          <thead className="bg-gray-800 text-gray-400  text-sm uppercase tracking-wide">
             <tr>
               <th className="text-left p-5">Name</th>
               <th className="text-left p-5">Company</th>
@@ -141,50 +141,136 @@ export default function ClientsPage() {
               <th className="text-right p-5">Action</th>
             </tr>
           </thead>
-          <tbody>
-            {clients.map((client) => (
-              <tr
-                key={client._id}
-                className="border-t border-gray-800 hover:bg-gray-800/50 transition"
-              >
-                <td className="p-5 font-medium">{client.name}</td>
-                <td className="p-5 text-gray-300">{client.company}</td>
-                <td className="p-5 text-gray-400">{client.email}</td>
+         <tbody>
+  {clients.map((client) => (
+    <tr
+      key={client._id}
+      className="block md:table-row border-t border-gray-800 hover:bg-gray-800/50 transition mb-4 md:mb-0 rounded-xl md:rounded-none bg-gray-900 md:bg-transparent"
+    >
+      {/* Name */}
+      <td className="p-4 md:p-5 block md:table-cell">
+        <div className="flex justify-between md:block">
+          <span className="md:hidden text-gray-500 text-xs">Name</span>
+          <span className="font-medium">{client.name}</span>
+        </div>
+      </td>
 
-                <td className="p-5">
-                  <span
-                    className={`px-4 py-1.5 rounded-full text-sm font-medium ${statusColor(
-                      client.status
-                    )}`}
-                  >
-                    {client.status}
-                  </span>
-                </td>
+      {/* Company */}
+      <td className="p-4 md:p-5 block md:table-cell text-gray-300">
+        <div className="flex justify-between md:block">
+          <span className="md:hidden text-gray-500 text-xs">Company</span>
+          <span>{client.company}</span>
+        </div>
+      </td>
 
-                <td className="p-5 text-sm text-gray-400">
-                  {client.createdAt && (
-                    <div>🕒 {formatTime(client.createdAt)}</div>
-                  )}
-                  {client.updatedAt && (
-                    <div className="text-green-400">
-                      ✏️ {formatTime(client.updatedAt)}
-                    </div>
-                  )}
-                </td>
+      {/* Email */}
+      <td className="p-4 md:p-5 block md:table-cell text-gray-400 break-all">
+        <div className="flex justify-between md:block">
+          <span className="md:hidden text-gray-500 text-xs">Email</span>
+          <span>{client.email}</span>
+        </div>
+      </td>
 
-                <td className="p-5 text-right">
-                  <button
-                    onClick={() => deleteClient(client._id)}
-                    className="text-red-500 hover:scale-110 transition"
-                  >
-                    <Trash2 size={18} />
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
+      {/* Status */}
+      <td className="p-4 md:p-5 block md:table-cell">
+        <div className="flex justify-between md:block">
+          <span className="md:hidden text-gray-500 text-xs">Status</span>
+          <span
+            className={`px-3 py-1 rounded-full text-xs font-medium ${statusColor(
+              client.status
+            )}`}
+          >
+            {client.status}
+          </span>
+        </div>
+      </td>
+
+      {/* Time */}
+      <td className="p-4 md:p-5 block md:table-cell text-sm text-gray-400">
+        <div className="flex justify-between md:block">
+          <span className="md:hidden text-gray-500 text-xs">Time</span>
+          <div>
+            {client.createdAt && <div>🕒 {formatTime(client.createdAt)}</div>}
+            {client.updatedAt && (
+              <div className="text-green-400">
+                ✏️ {formatTime(client.updatedAt)}
+              </div>
+            )}
+          </div>
+        </div>
+      </td>
+
+      {/* Action */}
+      <td className="p-4 md:p-5 block md:table-cell md:text-right">
+        <div className="flex justify-between md:block">
+          <span className="md:hidden text-gray-500 text-xs">Action</span>
+          <button
+            onClick={() => deleteClient(client._id)}
+            className="text-red-500 hover:scale-110 transition"
+          >
+            <Trash2 size={18} />
+          </button>
+        </div>
+      </td>
+    </tr>
+  ))}
+</tbody>
         </table>
       </div>
+
+      
+      <div className="md:hidden flex flex-col gap-4">
+  {clients.map((client) => (
+    <div
+      key={client._id}
+      className="bg-gray-900 border border-gray-800 p-4 rounded-2xl shadow-sm"
+    >
+      {/* Header */}
+      <div className="flex justify-between items-center mb-2">
+        <h2 className="font-semibold text-lg">{client.name}</h2>
+        <button
+          onClick={() => deleteClient(client._id)}
+          className="text-red-500"
+        >
+          <Trash2 size={16} />
+        </button>
+      </div>
+
+      {/* Info */}
+      <div className="text-sm text-gray-400 space-y-1">
+        <p>
+          <span className="text-gray-500">Company:</span> {client.company}
+        </p>
+        <p className="break-all">
+          <span className="text-gray-500">Email:</span> {client.email}
+        </p>
+      </div>
+
+      {/* Status + Time */}
+      <div className="flex justify-between items-center mt-3">
+        <span
+          className={`px-3 py-1 rounded-full text-xs font-medium ${statusColor(
+            client.status
+          )}`}
+        >
+          {client.status}
+        </span>
+
+        <div className="text-xs text-gray-400 text-right">
+          {client.createdAt && (
+            <div>🕒 {formatTime(client.createdAt)}</div>
+          )}
+          {client.updatedAt && (
+            <div className="text-green-400">
+              ✏️ {formatTime(client.updatedAt)}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  ))}
+</div>
+
     </div>
   );
 }
