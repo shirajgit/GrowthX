@@ -10,6 +10,7 @@ export async function DELETE(
   await connectDB();
 
   const { id } = await context.params;
+  
 
   await Project.findByIdAndDelete(id);
 

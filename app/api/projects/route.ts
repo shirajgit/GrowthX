@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/db";
-import Note from "@/models/Note";
 import { auth } from "@clerk/nextjs/server";
+import Project from "@/models/Project";
 
 export async function GET() {
   await connectDB();
@@ -9,7 +9,7 @@ export async function GET() {
   const { userId } = await auth();
   if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const notes = await Note.find({ userId }).sort({ createdAt: -1 });
+  const notes = await Project.find({ userId }).sort({ createdAt: -1 });
 
   return NextResponse.json(notes);
 }
@@ -22,7 +22,7 @@ export async function POST(req: Request) {
 
   const body = await req.json();
 
-  const note = await Note.create({
+  const note = await Project.create({
     ...body,
     userId,
   });

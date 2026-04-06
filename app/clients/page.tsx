@@ -20,6 +20,7 @@ export default function ClientsPage() {
     company: "",
     email: "",
     status: "active",
+    
   });
 
   const fetchClients = async () => {

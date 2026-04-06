@@ -6,7 +6,7 @@ import { auth } from "@clerk/nextjs/server";
 // ================= UPDATE TASK =================
 export async function PUT(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await connectDB();
@@ -19,9 +19,10 @@ export async function PUT(
       );
 
     const body = await req.json();
+    const { id } = await params;
 
     const task = await Task.findOneAndUpdate(
-      { _id: params.id, userId }, // ✅ secure
+      { _id: id, userId }, // ✅ secure
       body,
       { new: true }
     );
@@ -38,7 +39,7 @@ export async function PUT(
 // ================= DELETE TASK =================
 export async function DELETE(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await connectDB();
@@ -50,8 +51,10 @@ export async function DELETE(
         { status: 401 }
       );
 
+    const { id } = await params;
+
     await Task.findOneAndDelete({
-      _id: params.id,
+      _id: id,
       userId, // ✅ secure
     });
 
