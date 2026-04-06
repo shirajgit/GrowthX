@@ -1,21 +1,45 @@
 import { NextResponse } from "next/server";
+import { auth } from "@clerk/nextjs/server";
 import { connectDB } from "@/lib/db";
-import Leads from "@/models/Leads";
- 
+import Lead from "@/models/Leads";
 
-// GET all leads
 export async function GET() {
-  await connectDB();
-  const leads = await Leads.find().sort({ createdAt: -1 });
-  return NextResponse.json(leads);
+  try {
+    await connectDB();
+
+    const { userId } = await auth();
+
+    if (!userId) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const leads = await Lead.find({ userId });
+
+    return NextResponse.json(leads);
+  } catch (err) {
+    return NextResponse.json({ error: "Error fetching leads" }, { status: 500 });
+  }
 }
 
-// CREATE lead
 export async function POST(req: Request) {
-  await connectDB();
-  const body = await req.json();
+  try {
+    await connectDB();
 
-  const lead = await Leads.create(body);
+    const { userId } = await auth();
 
-  return NextResponse.json(lead);
+    if (!userId) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const body = await req.json();
+
+    const newLead = await Lead.create({
+      ...body,
+      userId, // 🔥 attach user
+    });
+
+    return NextResponse.json(newLead);
+  } catch (err) {
+    return NextResponse.json({ error: "Error creating lead" }, { status: 500 });
+  }
 }

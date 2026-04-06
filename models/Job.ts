@@ -9,6 +9,12 @@ const JobSchema = new mongoose.Schema(
       enum: ["applied", "interview", "rejected", "offer"],
       default: "applied",
     },
+
+    // 🔥 IMPORTANT
+    userId: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );

@@ -1,16 +1,22 @@
-import mongoose from "mongoose";
+ import mongoose from "mongoose";
 
 const LeadSchema = new mongoose.Schema(
   {
     name: String,
-    company: String,
     email: String,
+    company: String,
     status: {
       type: String,
       enum: ["new", "contacted", "converted", "lost"],
       default: "new",
     },
-    work: String, // 🔥 what action to take (follow-up, call, proposal)
+    work: String, 
+
+    // 🔥 IMPORTANT
+    userId: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );

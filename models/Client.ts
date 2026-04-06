@@ -10,6 +10,11 @@ const ClientSchema = new mongoose.Schema(
       enum: ["active", "pending", "inactive"],
       default: "active",
     },
+
+     userId: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );

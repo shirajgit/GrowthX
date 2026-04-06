@@ -7,6 +7,7 @@ type Task = {
   _id: string;
   title: string;
   status: "todo" | "done";
+  userId: string;
   createdAt?: string;
   updatedAt?: string;
 };
@@ -59,29 +60,34 @@ export default function TasksPage() {
     return `${date.toLocaleDateString()}, ${time}`;
   };
 
-  const addTask = async () => {
-    if (!input.trim()) return;
+const addTask = async () => {
+  if (!input.trim()) return;
 
-    const res = await fetch("/api/tasks", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        title: input,
-        status: "todo",
-      }),
-    });
+  const res = await fetch("/api/tasks", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      title: input,
+    }),
+  });
 
-    const newTask = await res.json();
-    setTasks((prev) => [newTask, ...prev]);
-    setInput("");
-  };
+  if (!res.ok) {
+    console.log("ERROR:", await res.json());
+    return;
+  }
+
+  const newTask = await res.json();
+
+  setTasks((prev) => [newTask, ...prev]);
+  setInput("");
+};
 
   const toggleTask = async (task: Task) => {
     const newStatus = task.status === "done" ? "todo" : "done";
 
-    const res = await fetch(`/api/${task._id}`, {
+    const res = await fetch(`/api/tasks/${task._id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -97,7 +103,7 @@ export default function TasksPage() {
   };
 
   const deleteTask = async (id: string) => {
-    await fetch(`/api/${id}`, {
+    await fetch(`/api/tasks/${id}`, {
       method: "DELETE",
     });
 

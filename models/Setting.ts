@@ -8,6 +8,10 @@ const SettingSchema = new mongoose.Schema(
       type: String,
       default: "dark",
     },
+     userId: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );
