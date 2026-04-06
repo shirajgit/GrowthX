@@ -9,6 +9,19 @@ import {
 } from "@clerk/nextjs";
 import Sidebar from "@/components/Sidebar";
 
+const metadata = {  
+  title: "GrowthX",
+  description: "A dashboard for GrowthX users to manage their growth and analytics.",
+};
+ 
+const icons = {
+  icon: "/favicon.ico",
+  shortcut: "/favicon.ico",
+  apple: "/favicon.ico",
+};  
+
+
+
 function LayoutContent({ children }: { children: React.ReactNode }) {
   const { isSignedIn, isLoaded } = useUser();
 
@@ -82,6 +95,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <meta charSet="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{metadata.title}</title>
+        <meta name="description" content={metadata.description} />
+        <link rel="icon" href={icons.icon} />
+        <link rel="shortcut icon" href={icons.shortcut} />
+        <link rel="apple-touch-icon" sizes="180x180" href={icons.apple} />
+      </head>
       <body>
         <ClerkProvider>
           <LayoutContent>{children}</LayoutContent>
