@@ -9,6 +9,19 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
+interface Project {
+  name: string;
+}
+
+interface ChartDataItem {
+  day: string | number;
+  tasks: number;
+  projects: number;
+  jobs: number;
+  clients: number;
+  total: number;
+}
+
 export default function DashboardLayout() {
   const [stats, setStats] = useState([
     { title: "Tasks Today", value: 0 },
@@ -17,8 +30,8 @@ export default function DashboardLayout() {
     { title: "Clients", value: 0 },
   ]);
 
-  const [chartData, setChartData] = useState<any[]>([]);
-  const [projects, setProjects] = useState<any[]>([]);
+  const [chartData, setChartData] = useState<ChartDataItem[]>([]);
+  const [projects, setProjects] = useState<Project[]>([]);
   const [activities, setActivities] = useState<string[]>([]);
   const [suggestions, setSuggestions] = useState<string[]>([]);
 
@@ -56,7 +69,7 @@ export default function DashboardLayout() {
       setStats([
         {
           title: "Tasks Today",
-          value: tasks.filter((t: any) => t.status !== "done").length,
+          value: tasks.filter((t: { status: string }) => t.status !== "done").length,
         },
         { title: "Projects", value: projectsData.length },
         { title: "Jobs", value: jobs.length },
@@ -65,7 +78,7 @@ export default function DashboardLayout() {
 
       // ✅ Chart
       const days = range === "7d" ? 7 : 30;
-      const data: any[] = [];
+      const data: { day: string | number; tasks: number; projects: number; jobs: number; clients: number; total: number }[] = [];
 
       let prevTotal = 0;
       let currentTotal = 0;
@@ -76,7 +89,7 @@ export default function DashboardLayout() {
 
         const dateStr = d.toISOString().split("T")[0];
 
-        const count = (arr: any[]) =>
+        const count = (arr: { createdAt?: string }[]) =>
           arr.filter((x) => x.createdAt?.startsWith(dateStr)).length;
 
         const t = count(tasks);
@@ -131,7 +144,7 @@ export default function DashboardLayout() {
       // ✅ AI Suggestions (smart)
       const sugg: string[] = [];
 
-      const pending = tasks.filter((t: any) => t.status !== "done");
+      const pending = tasks.filter((t: { status: string }) => t.status !== "done");
 
       if (pending.length > 5)
         sugg.push("🔥 Reduce pending tasks");

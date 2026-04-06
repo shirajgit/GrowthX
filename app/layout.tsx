@@ -30,7 +30,7 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
             </button>
           </SignInButton>
         ) : (
-          <UserButton afterSignOutUrl="/" />
+          <UserButton />
         )}
       </div>
 
