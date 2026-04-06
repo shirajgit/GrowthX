@@ -133,7 +133,7 @@ export default function Sidebar() {
       <motion.aside
         animate={{ width: desktopOpen ? 260 : 80 }}
         className="hidden md:flex flex-col justify-between 
-        bg-gradient-to-b from-[#0f172a] to-[#111827]
+     bg-[#0f0f0f]
         border-r border-[#2a2a2a] p-4"
       >
         {/* TOP */}
