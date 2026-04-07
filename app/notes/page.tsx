@@ -73,7 +73,7 @@ useEffect(() => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-950 text-white p-4 sm:p-6">
-      <h1 className="text-4xl mt-12 lg:mt-1 font-bold mb-8">📝 Notes</h1>
+      <h1 className="text-3xl mt-1 lg:mt-1 font-bold mb-8">📝 Notes</h1>
 
       {/* Add Note */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">

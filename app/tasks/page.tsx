@@ -114,8 +114,8 @@ const addTask = async () => {
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-950 text-white p-6">
       
       {/* Header */}
-      <div className="flex mt-12 lg:mt-1 justify-between items-center mb-8">
-        <h1 className="text-4xl font-bold tracking-tight">
+      <div className="flex mt-2 lg:mt-1 justify-between items-center mb-8">
+        <h1 className="text-3xl font-bold tracking-tight">
           🧠 Tasks Manager
         </h1>
       </div>
