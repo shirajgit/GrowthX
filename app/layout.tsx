@@ -102,7 +102,8 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
               Continue building your productivity empire
             </p>
 
-            <SignInButton mode="modal">
+          <SignInButton mode="modal">
+              
               <button className="w-full py-3 rounded-xl bg-white text-black font-semibold 
                 hover:bg-gray-200 transition-all duration-200 
                 hover:scale-[1.02] active:scale-[0.98] shadow-lg">
