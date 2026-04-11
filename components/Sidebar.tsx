@@ -1,4 +1,4 @@
- "use client";
+"use client";
 
 import { useState } from "react";
 import {
@@ -12,6 +12,8 @@ import {
   Flame,
   Notebook,
   Settings,
+  Sparkles,
+ 
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -25,38 +27,33 @@ export default function Sidebar() {
 
   const { user, isLoaded } = useUser();
 
-  // 🚫 Hide sidebar if not logged in
   if (!isLoaded || !user) return null;
 
   const menuItems = [
     { name: "Dashboard", path: "/", icon: LayoutDashboard },
+    { name: "AI Assistant", path: "/ai", icon: Sparkles },
     { name: "Tasks", path: "/tasks", icon: CheckSquare },
     { name: "Projects", path: "/projects", icon: Folder },
     { name: "Jobs", path: "/jobs", icon: Briefcase },
     { name: "Clients", path: "/clients", icon: Users },
     { name: "Leads", path: "/leads", icon: Flame },
-    { name: "Notes", path: "/notes", icon: Notebook },
+    { name: "Notes", path: "/notes", icon: Notebook },   
     { name: "Settings", path: "/settings", icon: Settings },
-  ];
+  ];    
 
   return (
     <>
-      {/* MOBILE TOP BAR */}
+      {/* ================= MOBILE ================= */}
       <div className="md:hidden fixed top-0 left-0 right-0 z-50 
-        bg-gradient-to-r from-[#0f172a] to-[#111827] 
-        border-b border-[#2a2a2a] p-4 flex justify-between items-center backdrop-blur-lg">
-        
-        <h1 className="text-2xl font-bold text-white tracking-wide 
-        drop-shadow-[0_0_10px_rgba(59,130,246,0.7)]">
-          GrowthX
-        </h1>
+        bg-[#0f0f0f]/80 backdrop-blur-xl border-b border-white/10 px-4 py-3 flex justify-between items-center">
 
-        <button onClick={() => setMobileOpen(true)} className="text-gray-300">
-          <Menu />
+        <h1 className="text-xl font-semibold text-white">GrowthX</h1>
+
+        <button onClick={() => setMobileOpen(true)}>
+          <Menu className="text-gray-300" />
         </button>
       </div>
 
-      {/* MOBILE SIDEBAR */}
       <AnimatePresence>
         {mobileOpen && (
           <>
@@ -65,128 +62,145 @@ export default function Sidebar() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setMobileOpen(false)}
-              className="fixed inset-0 bg-black/60 z-40 backdrop-blur-sm"
+              className="fixed inset-0 bg-black/70 backdrop-blur-sm z-40"
             />
 
             <motion.aside
               initial={{ x: -320 }}
               animate={{ x: 0 }}
               exit={{ x: -320 }}
-              transition={{ type: "spring", stiffness: 200 }}
-              className="fixed top-0 left-0 w-72 h-full 
-              bg-gradient-to-b from-[#0f172a] to-[#111827]
-              border-r border-[#2a2a2a] z-50 p-5 shadow-2xl flex flex-col justify-between"
+              transition={{ type: "spring", stiffness: 260, damping: 25 }}
+              className="fixed top-0 left-0 w-72 h-full z-50 
+              bg-[#0f0f0f] border-r border-white/10 
+              p-5 flex flex-col justify-between shadow-2xl"
             >
-              {/* MENU */}
-              <div>
-                <div className="flex justify-between items-center mb-6">
-                  <h2 className="font-semibold text-white">Menu</h2>
-                  <button onClick={() => setMobileOpen(false)}>
-                    <X className="text-gray-400" />
-                  </button>
-                </div>
-
-                <nav className="flex flex-col gap-2">
-                  {menuItems.map((item, i) => {
-                    const Icon = item.icon;
-                    const isActive = pathname === item.path;
-
-                    return (
-                      <Link key={i} href={item.path} onClick={() => setMobileOpen(false)}>
-                        <div
-                          className={`flex items-center gap-3 px-3 py-2 rounded-xl text-sm transition
-                          ${
-                            isActive
-                              ? "bg-white text-black"
-                              : "text-gray-400 hover:bg-white/10 hover:text-white"
-                          }`}
-                        >
-                          <Icon size={18} />
-                          {item.name}
-                        </div>
-                      </Link>
-                    );
-                  })}
-                </nav>
-              </div>
-
-              {/* USER */}
-              <div className="flex items-center justify-between mt-6 pt-4 border-t border-gray-700">
-                <div className="text-sm">
-                  <p className="text-white font-medium">
-                    {user.firstName || "User"}
-                  </p>
-                  <p className="text-gray-400 text-xs">
-                    {user.primaryEmailAddress?.emailAddress}
-                  </p>
-                </div>
-
-                {/* ✅ FIXED (NO afterSignOutUrl) */}
-                <UserButton />
-              </div>
+              <SidebarContent
+                menuItems={menuItems}
+                pathname={pathname}
+                user={user}
+                close={() => setMobileOpen(false)}
+                collapsed={false}
+              />
             </motion.aside>
           </>
         )}
       </AnimatePresence>
 
-      {/* DESKTOP SIDEBAR */}
+      {/* ================= DESKTOP ================= */}
       <motion.aside
         animate={{ width: desktopOpen ? 260 : 80 }}
-        className="hidden md:flex flex-col justify-between 
-     bg-[#0f0f0f]
-        border-r border-[#2a2a2a] p-4"
+        transition={{ duration: 0.25 }}
+        className="hidden md:flex flex-col justify-between
+        bg-[#0f0f0f] border-r border-white/10
+        h-screen p-3 backdrop-blur-xl relative"
       >
-        {/* TOP */}
-        <div>
-          <button
-            onClick={() => setDesktopOpen(!desktopOpen)}
-            className="mb-6 flex items-center gap-2 text-gray-400 hover:text-white"
-          >
-            <Menu size={18} />
-            {desktopOpen && <span className="text-sm">Menu</span>}
-          </button>
+        <SidebarContent
+          menuItems={menuItems}
+          pathname={pathname}
+          user={user}
+          collapsed={!desktopOpen}
+          toggle={() => setDesktopOpen(!desktopOpen)}
+        />
 
-          <nav className="flex flex-col gap-2">
-            {menuItems.map((item, i) => {
-              const Icon = item.icon;
-              const isActive = pathname === item.path;
+        {/* 🚀 FLOATING AI BUTTON */}
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          className="absolute bottom-6 right-4 bg-white text-black p-3 rounded-full shadow-xl"
+        >
+          <Sparkles size={18} />
+        </motion.button>
+      </motion.aside>
+    </>
+  );
+}
 
-              return (
-                <Link key={i} href={item.path}>
-                  <div
-                    className={`flex items-center gap-3 px-3 py-2 rounded-xl text-sm transition
+/* ================= CONTENT ================= */
+
+function SidebarContent({
+  menuItems,
+  pathname,
+  user,
+  collapsed,
+  toggle,
+  close,
+}: any) {
+  return (
+    <>
+      {/* TOP */}
+      <div>
+        <div className="flex items-center justify-between mb-6 px-2">
+          {!collapsed && (
+            <h1 className="text-lg font-semibold text-white">Navigation</h1>
+          )}
+
+          {toggle && (
+            <button
+              onClick={toggle}
+              className="text-gray-400 hover:text-white"
+            >
+              <Menu size={18} />
+            </button>
+          )}
+        </div>
+
+        {/* NAV */}
+        <nav className="flex flex-col gap-2">
+          {menuItems.map((item: any, i: number) => {
+            const Icon = item.icon;
+            const isActive = pathname === item.path;
+
+            return (
+              <Link key={i} href={item.path} onClick={close}>
+                <div className="relative group">
+                  <motion.div
+                    whileHover={{ scale: 1.03 }}
+                    className={`flex items-center gap-3 px-3 py-2 rounded-xl text-sm transition-all duration-200
                     ${
                       isActive
-                        ? "bg-white text-black"
+                        ? "bg-white text-black shadow"
                         : "text-gray-400 hover:bg-white/10 hover:text-white"
                     }`}
                   >
+                    {/* 🔥 Active Glow */}
+                    {isActive && (
+                      <div className="absolute inset-0 rounded-xl bg-white/10 blur-md" />
+                    )}
+
                     <Icon size={18} />
-                    {desktopOpen && item.name}
-                  </div>
-                </Link>
-              );
-            })}
-          </nav>
-        </div>
 
-        {/* USER */}
-        <div className="flex items-center justify-between border-t border-gray-700 pt-4">
-          {desktopOpen && (
-            <div className="text-sm">
-              <p className="text-white font-medium">
-                {user.firstName || "User"}
-              </p>
-              <p className="text-gray-400 text-xs">
-                {user.primaryEmailAddress?.emailAddress}
-              </p>
-            </div>
-          )}
+                    {!collapsed && item.name}
+                  </motion.div>
 
-          {/* ✅ FIXED */}
-          <UserButton />
-        </div>
-      </motion.aside>
+                  {/* 💡 TOOLTIP */}
+                  {collapsed && (
+                    <span className="absolute left-14 top-1/2 -translate-y-1/2 
+                      bg-black text-white text-xs px-2 py-1 rounded opacity-0 
+                      group-hover:opacity-100 transition whitespace-nowrap">
+                      {item.name}
+                    </span>
+                  )}
+                </div>
+              </Link>
+            );
+          })}
+        </nav>
+      </div>
+
+      {/* USER */}
+      <div className="border-t border-white/10 pt-4 flex items-center justify-between px-2">
+        {!collapsed && (
+          <div>
+            <p className="text-sm text-white font-medium">
+              {user.firstName || "User"}
+            </p>
+            <p className="text-xs text-gray-400">
+              {user.primaryEmailAddress?.emailAddress}
+            </p>
+          </div>
+        )}
+
+        <UserButton />
+      </div>
     </>
   );
 }

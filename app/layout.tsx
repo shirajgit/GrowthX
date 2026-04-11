@@ -9,22 +9,25 @@ import {
 } from "@clerk/nextjs";
 import Sidebar from "@/components/Sidebar";
 import { motion } from "framer-motion";
+import { useState } from "react";
 
-const metadata = {  
+const metadata = {
   title: "GrowthX",
-  description: "A dashboard for GrowthX users to manage their growth and analytics.",
+  description:
+    "A dashboard for GrowthX users to manage their growth and analytics.",
 };
 
 function LayoutContent({ children }: { children: React.ReactNode }) {
   const { isSignedIn, isLoaded } = useUser();
+  const [loading, setLoading] = useState(false);
 
   if (!isLoaded) return null;
 
   return (
     <div className="min-h-screen bg-[#0f0f0f] text-white relative overflow-hidden">
-
+      
       {/* 🔥 BACKGROUND GLOW */}
-      <div className="absolute inset-0 -z-10">
+      <div className="absolute inset-0 -z-10 pointer-events-none">
         <div className="absolute w-[500px] h-[500px] bg-white/5 blur-[120px] top-[-100px] left-[-100px]" />
         <div className="absolute w-[400px] h-[400px] bg-white/5 blur-[120px] bottom-[-100px] right-[-100px]" />
       </div>
@@ -73,17 +76,15 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
       {/* ================= AUTH SCREEN ================= */}
       {!isSignedIn ? (
         <div className="flex items-center justify-center h-[calc(100vh-80px)] px-4">
-
           <motion.div
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             className="w-full max-w-md p-8 rounded-3xl 
             bg-white/5 backdrop-blur-2xl border border-white/10 
-            shadow-[0_0_60px_rgba(255,255,255,0.08)] text-center relative overflow-hidden"
+            shadow-[0_0_60px_rgba(255,255,255,0.08)] text-center relative"
           >
-
             {/* GLOW INSIDE */}
-            <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-20" />
+            <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-20 pointer-events-none" />
 
             {/* LOGO */}
             <div className="mb-6 relative z-10">
@@ -102,14 +103,19 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
               Continue building your productivity empire
             </p>
 
-          <SignInButton mode="modal">
-              
-              <button className="w-full py-3 rounded-xl bg-white text-black font-semibold 
-                hover:bg-gray-200 transition-all duration-200 
-                hover:scale-[1.02] active:scale-[0.98] shadow-lg">
-                Continue with Clerk
-              </button>
-            </SignInButton>
+            {/* FIXED BUTTON */}
+            <div className="relative z-10">
+              <SignInButton mode="modal">
+                <button
+                  onClick={() => setLoading(true)}
+                  className="w-full py-3 rounded-xl bg-white text-black font-semibold 
+                  hover:bg-gray-200 transition-all duration-200 
+                  hover:scale-[1.02] active:scale-[0.98] shadow-lg"
+                >
+                  {loading ? "Opening..." : "Continue with Clerk"}
+                </button>
+              </SignInButton>
+            </div>
 
             <p className="text-xs text-gray-500 mt-6 relative z-10">
               Secured with enterprise-grade authentication
@@ -118,7 +124,6 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
         </div>
       ) : (
         <div className="flex h-[calc(100vh-64px)]">
-
           {/* SIDEBAR */}
           <Sidebar />
 
@@ -126,9 +131,9 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
           <motion.main
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="flex-1 overflow-y-auto "
+            className="flex-1 overflow-y-auto"
           >
-            <div className="bg-white/[0.02] rounded-3xl border border-white/10  shadow-inner">
+            <div className="bg-white/[0.02] rounded-3xl border border-white/10 shadow-inner">
               {children}
             </div>
           </motion.main>
