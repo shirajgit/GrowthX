@@ -9,9 +9,7 @@ import {
 } from "@clerk/nextjs";
 import Sidebar from "@/components/Sidebar";
 import { motion } from "framer-motion";
-import { useState } from "react";
- 
-
+import { useState, useEffect } from "react";
 
 const metadata = {
   title: "GrowthX",
@@ -22,6 +20,20 @@ const metadata = {
 function LayoutContent({ children }: { children: React.ReactNode }) {
   const { isSignedIn, isLoaded } = useUser();
   const [loading, setLoading] = useState(false);
+
+  // 🔥 AUTO SYNC USER WITH DB
+  useEffect(() => {
+    if (!isSignedIn) return;
+
+    const synced = sessionStorage.getItem("synced");
+
+    if (!synced) {
+      fetch("/api/user/sync").catch(() =>
+        console.error("User sync failed")
+      );
+      sessionStorage.setItem("synced", "true");
+    }
+  }, [isSignedIn]);
 
   if (!isLoaded) return null;
 
@@ -105,7 +117,6 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
               Continue building your productivity empire
             </p>
 
-            {/* FIXED BUTTON */}
             <div className="relative z-10">
               <SignInButton mode="modal">
                 <button
