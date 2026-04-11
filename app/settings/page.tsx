@@ -1,111 +1,77 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { UserButton, useUser, useClerk } from "@clerk/nextjs";
 
-export default function SettingsPage() {
-  const [profile, setProfile] = useState({
-    name: "",
-    email: "",
-  });
+export default function ProfilePage() {
+  const { user } = useUser();
+  const { signOut, openUserProfile } = useClerk();
 
-  const [theme, setTheme] = useState("dark");
-
-  // 🔹 Load settings
-  const fetchSettings = async () => {
-    const res = await fetch("/api/settings");
-    const data = await res.json();
-
-    setProfile({
-      name: data.name,
-      email: data.email,
-    });
-    setTheme(data.theme);
-  };
-
- useEffect(() => {
-    (async () => {
-      await fetchSettings();
-    })();
-  }, []);
-
-  // 🔹 Save settings
-  const saveSettings = async () => {
-    const res = await fetch("/api/settings", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        ...profile,
-        theme,
-      }),
-    });
-
-    if (res.ok) {
-      alert("✅ Settings saved!");
-    }
-  };
+  if (!user) {
+    return (
+      <div className="h-screen flex items-center justify-center text-gray-400">
+        Loading profile...
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-950 text-white p-6">
-      <h1 className="text-3xl mt-1 lg:mt-1 font-bold mb-6">Settings</h1>
+    <div className="min-h-screen p-6 text-white bg-gradient-to-br from-black via-gray-900 to-black">
 
-      {/* Profile */}
-      <div className="bg-gray-900 p-5 rounded-2xl mb-6">
-        <h2 className="mb-4 font-semibold">Profile</h2>
+      {/* HEADER */}
+      <h1 className="text-3xl font-bold mb-6">👤 Profile</h1>
 
-        <div className="grid md:grid-cols-2 gap-4">
-          <input
-            value={profile.name}
-            onChange={(e) =>
-              setProfile({ ...profile, name: e.target.value })
-            }
-            placeholder="Name"
-            className="px-4 py-3 rounded-xl bg-gray-800"
-          />
-
-          <input
-            value={profile.email}
-            onChange={(e) =>
-              setProfile({ ...profile, email: e.target.value })
-            }
-            placeholder="Email"
-            className="px-4 py-3 rounded-xl bg-gray-800"
-          />
-        </div>
-      </div>
-
-      {/* Theme */}
-      <div className="bg-gray-900 p-5 rounded-2xl mb-6">
-        <h2 className="mb-4 font-semibold">Theme</h2>
-
-        <div className="flex gap-4">
-          <button
-            onClick={() => setTheme("dark")}
-            className={`px-4 py-2 rounded-xl ${
-              theme === "dark" ? "bg-white text-black" : "bg-gray-800"
-            }`}
-          >
-            Dark
-          </button>
-
-          <button
-            onClick={() => setTheme("light")}
-            className={`px-4 py-2 rounded-xl ${
-              theme === "light" ? "bg-white text-black" : "bg-gray-800"
-            }`}
-          >
-            Light
-          </button>
-        </div>
-      </div>
-
-      <button
-        onClick={saveSettings}
-        className="bg-white text-black px-6 py-3 rounded-xl"
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="max-w-xl mx-auto bg-white/5 border border-white/10 backdrop-blur-xl p-8 rounded-3xl text-center space-y-6"
       >
-        Save Settings
-      </button>
+
+        {/* AVATAR */}
+        <div className="flex justify-center">
+          <div className="scale-150">
+            <UserButton />
+          </div>
+        </div>
+
+        {/* USER INFO */}
+        <div>
+          <h2 className="text-xl font-semibold">
+            {user.fullName}
+          </h2>
+          <p className="text-gray-400 text-sm">
+            {user.primaryEmailAddress?.emailAddress}
+          </p>
+        </div>
+
+        {/* INFO TEXT */}
+        <p className="text-gray-400 text-sm">
+          Your account is securely managed via Clerk.  
+          You can update your personal details anytime.
+        </p>
+
+        {/* ACTIONS */}
+        <div className="flex flex-col gap-3">
+
+          {/* MANAGE ACCOUNT */}
+          <button
+            onClick={() => openUserProfile()}
+            className="w-full py-3 rounded-xl bg-white/10 hover:bg-white/20 transition"
+          >
+            ⚙️ Manage Account
+          </button>
+
+          {/* LOGOUT */}
+          <button
+            onClick={() => signOut()}
+            className="w-full py-3 rounded-xl bg-red-500/80 hover:bg-red-500 transition"
+          >
+            🚪 Logout
+          </button>
+
+        </div>
+
+      </motion.div>
     </div>
   );
 }

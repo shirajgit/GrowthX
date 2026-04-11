@@ -2,15 +2,13 @@ import mongoose from "mongoose";
 
 const SettingSchema = new mongoose.Schema(
   {
+    userId: { type: String, required: true, unique: true }, // 🔥 MUST
+
     name: String,
     email: String,
     theme: {
       type: String,
       default: "dark",
-    },
-     userId: {
-      type: String,
-      required: true,
     },
   },
   { timestamps: true }

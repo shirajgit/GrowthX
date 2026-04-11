@@ -38,7 +38,13 @@ export default function Sidebar() {
     { name: "Clients", path: "/clients", icon: Users },
     { name: "Leads", path: "/leads", icon: Flame },
     { name: "Notes", path: "/notes", icon: Notebook },   
-    { name: "Settings", path: "/settings", icon: Settings },
+    { name: "Profile", path: "/settings", icon: user.imageUrl ? () => (
+      <img
+        src={user.imageUrl}
+        alt="Profile"
+        className="w-6 h-6 rounded-full"
+      />
+    ) : Settings },
   ];    
 
   return (

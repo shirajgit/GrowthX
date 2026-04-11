@@ -10,6 +10,8 @@ import {
 import Sidebar from "@/components/Sidebar";
 import { motion } from "framer-motion";
 import { useState } from "react";
+ 
+
 
 const metadata = {
   title: "GrowthX",
