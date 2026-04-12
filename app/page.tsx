@@ -135,15 +135,7 @@ export default function DashboardLayout() {
 
         {/* 🔥 BUTTONS */}
         <div className="mt-4 flex flex-wrap gap-3">
-
-          {/* REFRESH */}
-          <button
-            onClick={fetchAI}
-            className="px-4 py-2 rounded-xl bg-white text-black hover:scale-105 transition"
-          >
-            🔄 Refresh AI
-          </button>
-
+ 
           {/* WHAT SHOULD I DO */}
           <button
             onClick={async () => {

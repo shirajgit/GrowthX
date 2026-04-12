@@ -50,10 +50,10 @@ export default function Sidebar() {
   return (
     <>
       {/* ================= MOBILE ================= */}
-      <div className="md:hidden fixed top-0 left-0 right-0 z-50 
+      <div className="md:hidden fixed top-0 h-[72px] left-0 right-0 z-50 
         bg-[#0f0f0f]/80 backdrop-blur-xl border-b border-white/10 px-4 py-3 flex justify-between items-center">
 
-        <h1 className="text-xl font-semibold text-white">GrowthX</h1>
+        <h1 className="text-2xl font-semibold text-white">GrowthX</h1>
 
         <button onClick={() => setMobileOpen(true)}>
           <Menu className="text-gray-300" />

@@ -22,20 +22,24 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(false);
 
   // 🔥 AUTO SYNC USER WITH DB
-  useEffect(() => {
-    if (!isSignedIn) return;
+useEffect(() => {
+  if (!isLoaded || !isSignedIn) return;
 
-    const synced = sessionStorage.getItem("synced");
-
-    if (!synced) {
-      fetch("/api/user/sync").catch(() =>
-        console.error("User sync failed")
-      );
-      sessionStorage.setItem("synced", "true");
+  const saveUser = async () => {
+    try {
+      await fetch("/api/user/sync", {
+        method: "POST",
+      });
+      console.log("User synced ✅");
+    } catch (err) {
+      console.error("User save failed", err);
     }
-  }, [isSignedIn]);
+  };
 
-  if (!isLoaded) return null;
+  saveUser();
+}, [isLoaded, isSignedIn]);
+
+ 
 
   return (
     <div className="min-h-screen bg-[#0f0f0f] text-white relative overflow-hidden">

@@ -1,45 +1,36 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/db";
 import User from "@/models/User";
-import { currentUser } from "@clerk/nextjs/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
 
-export async function GET() {
+export async function POST() {
   try {
     await connectDB();
 
-    const clerkUser = await currentUser();
+    const { userId } = await auth();
 
-    if (!clerkUser) {
-      return NextResponse.json(
-        { error: "Unauthorized" },
-        { status: 401 }
-      );
+    if (!userId) {
+      return NextResponse.json({ error: "No userId" }, { status: 401 });
     }
 
-    const clerkId = clerkUser.id;
+    const user = await currentUser();
 
-    const data = {
-      clerkId,
-      name: clerkUser.fullName,
-      email: clerkUser.emailAddresses[0]?.emailAddress,
-      image: clerkUser.imageUrl,
-    };
+    const existing = await User.findOne({ clerkId: userId });
 
-    let user = await User.findOne({ clerkId });
-
-    if (!user) {
-      user = await User.create(data);
-    } else {
-      user = await User.findOneAndUpdate(
-        { clerkId },
-        data,
-        { new: true }
-      );
+    if (existing) {
+      return NextResponse.json(existing);
     }
 
-    return NextResponse.json(user);
+    const newUser = await User.create({
+      clerkId: userId,
+      name: user?.firstName || "User",
+      email: user?.emailAddresses?.[0]?.emailAddress,
+    });
+
+    return NextResponse.json(newUser);
   } catch (err) {
     console.error(err);
-    return NextResponse.json({ error: "Sync failed" }, { status: 500 });
+    return NextResponse.json({ error: "Failed" }, { status: 500 });
   }
 }
+
