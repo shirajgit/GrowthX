@@ -1,158 +1,156 @@
 "use client";
 
 import "./globals.css";
-import {
-  ClerkProvider,
-  SignInButton,
-  UserButton,
-  useUser,
-} from "@clerk/nextjs";
+import { ClerkProvider, SignInButton, UserButton, useUser } from "@clerk/nextjs";
 import Sidebar from "@/components/Sidebar";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
-
-const metadata = {
-  title: "GrowthX",
-  description:
-    "A dashboard for GrowthX users to manage their growth and analytics.",
-};
 
 function LayoutContent({ children }: { children: React.ReactNode }) {
   const { isSignedIn, isLoaded } = useUser();
   const [loading, setLoading] = useState(false);
 
-  // 🔥 AUTO SYNC USER WITH DB
-useEffect(() => {
-  if (!isLoaded || !isSignedIn) return;
+  useEffect(() => {
+    if (!isLoaded || !isSignedIn) return;
+    fetch("/api/user/sync", { method: "POST" }).catch(console.error);
+  }, [isLoaded, isSignedIn]);
 
-  const saveUser = async () => {
-    try {
-      await fetch("/api/user/sync", {
-        method: "POST",
-      });
-      console.log("User synced ✅");
-    } catch (err) {
-      console.error("User save failed", err);
-    }
-  };
-
-  saveUser();
-}, [isLoaded, isSignedIn]);
-
- 
+  if (!isLoaded) {
+    return (
+      <div className="h-screen flex items-center justify-center" style={{ background: "#080808" }}>
+        <div className="w-8 h-8 rounded-full border-2 border-white/10 border-t-white/40 animate-spin" />
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-[#0f0f0f] text-white relative overflow-hidden">
-      
-      {/* 🔥 BACKGROUND GLOW */}
-      <div className="absolute inset-0 -z-10 pointer-events-none">
-        <div className="absolute w-[500px] h-[500px] bg-white/5 blur-[120px] top-[-100px] left-[-100px]" />
-        <div className="absolute w-[400px] h-[400px] bg-white/5 blur-[120px] bottom-[-100px] right-[-100px]" />
+    <div
+      className="min-h-screen text-white relative"
+      style={{
+        fontFamily: "'DM Sans', system-ui, sans-serif",
+        background: "#080808",
+      }}
+    >
+      {/* Global ambient glows */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute w-[700px] h-[700px] rounded-full blur-[140px] opacity-20"
+          style={{ background: "rgba(139,92,246,0.15)", top: "-200px", right: "-200px" }} />
+        <div className="absolute w-[500px] h-[500px] rounded-full blur-[140px] opacity-15"
+          style={{ background: "rgba(59,130,246,0.12)", bottom: "-150px", left: "-150px" }} />
       </div>
 
-      {/* ================= TOP BAR ================= */}
-      <motion.div
-        initial={{ y: -40, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        className="sticky top-0 z-50 flex justify-between items-center px-6 py-4 
-        border-b border-white/10 backdrop-blur-xl bg-white/5"
-      >
-        {/* LOGO */}
-        <h1 className="text-xl font-semibold tracking-wide 
-          bg-gradient-to-r from-white via-gray-300 to-gray-500 bg-clip-text text-transparent">
-          GrowthX
-        </h1>
-
-        {/* RIGHT */}
-        {!isSignedIn ? (
-          <SignInButton mode="modal">
-            <button className="px-5 py-2 rounded-xl bg-white text-black font-medium 
-              hover:scale-105 active:scale-95 transition-all duration-200 shadow-lg 
-              hover:shadow-white/20">
-              Sign In
-            </button>
-          </SignInButton>
-        ) : (
-          <div className="flex items-center gap-4">
-            {/* LIVE STATUS */}
-            <div className="hidden md:flex items-center gap-2 text-sm text-gray-400">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-              </span>
-              Live
-            </div>
-
-            {/* USER */}
-            <div className="p-[2px] rounded-full bg-gradient-to-r from-white/20 to-white/5">
-              <UserButton />
-            </div>
-          </div>
-        )}
-      </motion.div>
-
-      {/* ================= AUTH SCREEN ================= */}
       {!isSignedIn ? (
-        <div className="flex items-center justify-center h-[calc(100vh-80px)] px-4">
-          <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            className="w-full max-w-md p-8 rounded-3xl 
-            bg-white/5 backdrop-blur-2xl border border-white/10 
-            shadow-[0_0_60px_rgba(255,255,255,0.08)] text-center relative"
-          >
-            {/* GLOW INSIDE */}
-            <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-20 pointer-events-none" />
+        /* ---- AUTH SCREEN ---- */
+        <div className="relative flex flex-col min-h-screen">
+          {/* Top bar */}
+          <div className="flex items-center justify-between px-8 py-5"
+            style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+            <span className="text-lg font-bold tracking-tight"
+              style={{
+                background: "linear-gradient(90deg, #fff 0%, #666 100%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+              }}>
+              GrowthX
+            </span>
+            <SignInButton mode="modal">
+              <button className="text-sm px-4 py-2 rounded-xl font-medium transition-all hover:scale-105"
+                style={{
+                  background: "rgba(255,255,255,0.06)",
+                  border: "1px solid rgba(255,255,255,0.1)",
+                  color: "white",
+                }}>
+                Sign In
+              </button>
+            </SignInButton>
+          </div>
 
-            {/* LOGO */}
-            <div className="mb-6 relative z-10">
-              <div className="w-16 h-16 mx-auto rounded-2xl 
-                bg-gradient-to-br from-white/20 to-white/5 
-                flex items-center justify-center text-xl font-bold shadow-xl">
+          {/* Hero */}
+          <div className="flex-1 flex items-center justify-center px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 30, scale: 0.97 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              className="w-full max-w-md text-center"
+            >
+              {/* Logo mark */}
+              <motion.div
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ delay: 0.1, duration: 0.5 }}
+                className="w-16 h-16 mx-auto rounded-2xl flex items-center justify-center text-xl font-black mb-8"
+                style={{
+                  background: "linear-gradient(135deg, rgba(139,92,246,0.3), rgba(59,130,246,0.2))",
+                  border: "1px solid rgba(139,92,246,0.3)",
+                  boxShadow: "0 0 40px rgba(139,92,246,0.2)",
+                }}
+              >
                 GX
-              </div>
-            </div>
+              </motion.div>
 
-            <h2 className="text-3xl font-bold mb-3 tracking-tight relative z-10">
-              Welcome Back 👋
-            </h2>
+              <motion.h1
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="text-4xl font-black tracking-tight mb-3"
+              >
+                Welcome back
+              </motion.h1>
 
-            <p className="text-gray-400 mb-6 text-sm relative z-10">
-              Continue building your productivity empire
-            </p>
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.3 }}
+                className="text-gray-500 text-sm mb-10 leading-relaxed"
+              >
+                Your all-in-one productivity workspace.<br />
+                Tasks, projects, clients, and AI — all in one place.
+              </motion.p>
 
-            <div className="relative z-10">
-              <SignInButton mode="modal">
-                <button
-                  onClick={() => setLoading(true)}
-                  className="w-full py-3 rounded-xl bg-white text-black font-semibold 
-                  hover:bg-gray-200 transition-all duration-200 
-                  hover:scale-[1.02] active:scale-[0.98] shadow-lg"
-                >
-                  {loading ? "Opening..." : "Continue with Clerk"}
-                </button>
-              </SignInButton>
-            </div>
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+              >
+                <SignInButton mode="modal">
+                  <motion.button
+                    onClick={() => setLoading(true)}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.97 }}
+                    className="w-full py-4 rounded-2xl font-semibold text-sm transition-all"
+                    style={{
+                      background: "white",
+                      color: "black",
+                      boxShadow: "0 8px 32px rgba(255,255,255,0.15)",
+                    }}
+                  >
+                    {loading ? "Opening…" : "Continue with Clerk →"}
+                  </motion.button>
+                </SignInButton>
+              </motion.div>
 
-            <p className="text-xs text-gray-500 mt-6 relative z-10">
-              Secured with enterprise-grade authentication
-            </p>
-          </motion.div>
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.5 }}
+                className="text-xs text-gray-700 mt-6"
+              >
+                Enterprise-grade security · No credit card required
+              </motion.p>
+            </motion.div>
+          </div>
         </div>
       ) : (
-        <div className="flex h-[calc(100vh-64px)]">
-          {/* SIDEBAR */}
+        /* ---- APP LAYOUT ---- */
+        <div className="flex h-screen overflow-hidden">
           <Sidebar />
-
-          {/* MAIN */}
           <motion.main
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="flex-1 overflow-y-auto"
+            transition={{ duration: 0.3 }}
+            className="flex-1 overflow-y-auto pt-[60px] md:pt-0 relative"
           >
-            <div className="bg-white/[0.02] rounded-3xl border border-white/10 shadow-inner">
-              {children}
-            </div>
+            {children}
           </motion.main>
         </div>
       )}
@@ -160,19 +158,21 @@ useEffect(() => {
   );
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
-        <title>{metadata.title}</title>
-        <meta name="description" content={metadata.description} />
+        <title>GrowthX</title>
+        <meta name="description" content="Your all-in-one productivity workspace" />
         <link rel="icon" href="/favicon.ico" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;0,9..40,900&display=swap"
+          rel="stylesheet"
+        />
       </head>
-      <body>
+      <body style={{ margin: 0, padding: 0 }}>
         <ClerkProvider>
           <LayoutContent>{children}</LayoutContent>
         </ClerkProvider>
