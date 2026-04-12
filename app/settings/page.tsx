@@ -322,7 +322,7 @@ export default function ProfilePage() {
               style={{
                 background: "rgba(255,255,255,0.03)",
                 border: "1px solid rgba(255,255,255,0.07)",
-                divideColor: "rgba(255,255,255,0.04)",
+               
               }}
             >
               {section.items.map((item, ii) => (
