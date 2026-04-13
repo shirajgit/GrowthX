@@ -63,16 +63,59 @@ export default function Sidebar() {
           borderBottom: "1px solid rgba(255,255,255,0.06)",
         }}
       >
-        <span
-          className="text-base font-bold tracking-tight"
-          style={{
-            background: "linear-gradient(90deg, #fff, #888)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-          }}
-        >
-          GrowthX
-        </span>
+        <motion.div
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  exit={{ opacity: 0 }}
+  className="flex items-center gap-2 whitespace-nowrap"
+>
+  {/* GX Box */}
+  <motion.div
+    initial={{ scale: 0.9, opacity: 0 }}
+    animate={{ scale: 1, opacity: 1 }}
+    whileHover={{ scale: 1.05 }}
+    transition={{ duration: 0.3 }}
+    className="flex items-center justify-center rounded-xl"
+    style={{
+      width: "34px",
+      height: "34px",
+      background: "linear-gradient(135deg,#8b5cf6,#60a5fa,#34d399)",
+      boxShadow: "0 6px 20px rgba(139,92,246,0.35)",
+    }}
+  >
+    <span
+      style={{
+        color: "white",
+        fontWeight: 900,
+        fontSize: "12px",
+        fontFamily: "DM Sans, sans-serif",
+        letterSpacing: "-0.5px",
+      }}
+    >
+      GX
+    </span>
+  </motion.div>
+
+  {/* Text */}
+  <span
+    className="text-sm font-black tracking-tight"
+    style={{
+      fontFamily: "DM Sans, sans-serif",
+      letterSpacing: "-0.5px",
+    }}
+  >
+    <span style={{ color: "white" }}>Growth</span>
+    <span
+      style={{
+        background: "linear-gradient(90deg,#a78bfa,#60a5fa,#34d399)",
+        WebkitBackgroundClip: "text",
+        WebkitTextFillColor: "transparent",
+      }}
+    >
+      X
+    </span>
+  </span>
+</motion.div>
         <button onClick={() => setMobileOpen(true)} className="text-gray-400 hover:text-white transition-colors">
           <Menu size={20} />
         </button>
@@ -102,7 +145,28 @@ export default function Sidebar() {
               }}
             >
               <div className="flex items-center justify-between px-5 py-5">
-                <span className="text-base font-bold text-white tracking-tight">GrowthX</span>
+                
+               <motion.span
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  exit={{ opacity: 0 }}
+  className="text-sm font-black tracking-tight whitespace-nowrap"
+  style={{
+    fontFamily: "DM Sans, sans-serif",
+    letterSpacing: "-0.5px",
+  }}
+>
+  <span style={{ color: "white" }}>Growth</span>
+  <span
+    style={{
+      background: "linear-gradient(90deg,#a78bfa,#60a5fa,#34d399)",
+      WebkitBackgroundClip: "text",
+      WebkitTextFillColor: "transparent",
+    }}
+  >
+    X
+  </span>
+</motion.span>
                 <button onClick={() => setMobileOpen(false)} className="text-gray-600 hover:text-white">
                   <X size={18} />
                 </button>
@@ -135,14 +199,59 @@ export default function Sidebar() {
         <div className="flex items-center justify-between px-4 py-5 flex-shrink-0">
           <AnimatePresence>
             {desktopOpen && (
-              <motion.span
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="text-sm font-bold text-white tracking-tight whitespace-nowrap"
-              >
-                GrowthX
-              </motion.span>
+              <motion.div
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  exit={{ opacity: 0 }}
+  className="flex items-center gap-2 whitespace-nowrap"
+>
+  {/* GX Box */}
+  <motion.div
+    initial={{ scale: 0.9, opacity: 0 }}
+    animate={{ scale: 1, opacity: 1 }}
+    whileHover={{ scale: 1.05 }}
+    transition={{ duration: 0.3 }}
+    className="flex items-center justify-center rounded-xl"
+    style={{
+      width: "34px",
+      height: "34px",
+      background: "linear-gradient(135deg,#8b5cf6,#60a5fa,#34d399)",
+      boxShadow: "0 6px 20px rgba(139,92,246,0.35)",
+    }}
+  >
+    <span
+      style={{
+        color: "white",
+        fontWeight: 900,
+        fontSize: "12px",
+        fontFamily: "DM Sans, sans-serif",
+        letterSpacing: "-0.5px",
+      }}
+    >
+      GX
+    </span>
+  </motion.div>
+
+  {/* Text */}
+  <span
+    className="text-sm font-black tracking-tight"
+    style={{
+      fontFamily: "DM Sans, sans-serif",
+      letterSpacing: "-0.5px",
+    }}
+  >
+    <span style={{ color: "white" }}>Growth</span>
+    <span
+      style={{
+        background: "linear-gradient(90deg,#a78bfa,#60a5fa,#34d399)",
+        WebkitBackgroundClip: "text",
+        WebkitTextFillColor: "transparent",
+      }}
+    >
+      X
+    </span>
+  </span>
+</motion.div>
             )}
           </AnimatePresence>
           <button
