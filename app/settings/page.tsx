@@ -17,6 +17,8 @@ import {
   Palette,
   HelpCircle,
 } from "lucide-react";
+import { url } from "inspector";
+import { a } from "framer-motion/client";
 
 const menuSections = [
   {
@@ -71,6 +73,7 @@ const menuSections = [
         icon: HelpCircle,
         label: "Help Center",
         sub: "Docs, tutorials, FAQs",
+        url : "/settings/help",
         action: null,
         color: "#94a3b8",
       },
@@ -78,6 +81,7 @@ const menuSections = [
         icon: Shield,
         label: "Privacy & Data",
         sub: "Data export, deletion",
+        url: "/settings/privacydata",
         action: null,
         color: "#64748b",
       },
@@ -326,12 +330,14 @@ export default function ProfilePage() {
               }}
             >
               {section.items.map((item, ii) => (
+                <a href={"url" in item ? item.url : "#"} key={item.label} style={{ textDecoration: "none" }}>
                 <MenuRow
                   key={item.label}
                   item={item}
                   index={si * 3 + ii}
+                  
                   onClick={() => item.action === "profile" ? openUserProfile() : undefined}
-                />
+                /></a>
               ))}
             </div>
           </motion.div>
