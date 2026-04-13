@@ -3,7 +3,7 @@ import { connectDB } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import Task from "@/models/Task";
 import Project from "@/models/Project";
-import { useEffect, useState } from "react";
+
 
 export async function GET() {
   try {
