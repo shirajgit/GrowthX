@@ -6,6 +6,15 @@ if (!MONGODB_URI) {
   throw new Error("Please add MONGODB_URI to .env");
 }
 
+type MongooseCache = {
+  conn: typeof mongoose | null;
+  promise: Promise<typeof mongoose> | null;
+};
+
+const globalForMongoose = global as typeof globalThis & {
+  mongoose?: MongooseCache;
+};
+
 const cached = (global as any).mongoose || { conn: null, promise: null };
 
 export async function connectDB() {
