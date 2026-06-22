@@ -34,7 +34,6 @@ export default function Sidebar() {
     { name: "Tasks", path: "/tasks", icon: CheckSquare },
     { name: "Projects", path: "/projects", icon: Folder },
     { name: "Jobs", path: "/jobs", icon: Briefcase },
-    { name: "Clients", path: "/clients", icon: Users },
     { name: "Leads", path: "/leads", icon: Flame },
     { name: "Notes", path: "/notes", icon: Notebook },
     { name: "Profile", path: "/settings", icon: Settings },
