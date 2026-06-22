@@ -7,7 +7,6 @@ import {
   CheckSquare,
   Folder,
   Briefcase,
-  Users,
   Flame,
   Notebook,
   Settings,
@@ -28,15 +27,31 @@ export default function Sidebar() {
 
   if (!isLoaded || !user) return null;
 
-  const menuItems = [
-    { name: "Dashboard", path: "/", icon: LayoutDashboard },
-    { name: "AI Assistant", path: "/ai", icon: Sparkles },
-    { name: "Tasks", path: "/tasks", icon: CheckSquare },
-    { name: "Projects", path: "/projects", icon: Folder },
-    { name: "Jobs", path: "/jobs", icon: Briefcase },
-    { name: "Leads", path: "/leads", icon: Flame },
-    { name: "Notes", path: "/notes", icon: Notebook },
-    { name: "Profile", path: "/settings", icon: Settings },
+  // Grouped nav — sections give the sidebar structure instead of one flat list
+  const navSections = [
+    {
+      label: null,
+      items: [
+        { name: "Dashboard", path: "/", icon: LayoutDashboard },
+        { name: "AI Assistant", path: "/ai", icon: Sparkles },
+      ],
+    },
+    {
+      label: "Workspace",
+      items: [
+        { name: "Tasks", path: "/tasks", icon: CheckSquare },
+        { name: "Projects", path: "/projects", icon: Folder },
+        { name: "Jobs", path: "/jobs", icon: Briefcase },
+        { name: "Leads", path: "/leads", icon: Flame },
+      ],
+    },
+    {
+      label: "General",
+      items: [
+        { name: "Notes", path: "/notes", icon: Notebook },
+        { name: "Profile", path: "/settings", icon: Settings },
+      ],
+    },
   ];
 
   const iconColors: Record<string, string> = {
@@ -45,11 +60,45 @@ export default function Sidebar() {
     "/tasks": "#34d399",
     "/projects": "#3b82f6",
     "/jobs": "#f59e0b",
-    "/clients": "#ec4899",
     "/leads": "#f87171",
     "/notes": "#facc15",
     "/settings": "#94a3b8",
   };
+
+  const Logo = ({ withMark = true }: { withMark?: boolean }) => (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="flex items-center gap-2 whitespace-nowrap"
+    >
+      {withMark && (
+        <motion.div
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          whileHover={{ scale: 1.05 }}
+          transition={{ duration: 0.3 }}
+          className="flex items-center justify-center rounded-xl"
+          style={{
+            width: "34px",
+            height: "34px",
+            background: "linear-gradient(135deg,#8b5cf6,#60a5fa,#34d399)",
+            boxShadow: "0 6px 20px rgba(139,92,246,0.35)",
+          }}
+        >
+          <span style={{ color: "white", fontWeight: 900, fontSize: "12px", fontFamily: "DM Sans, sans-serif", letterSpacing: "-0.5px" }}>
+            GX
+          </span>
+        </motion.div>
+      )}
+      <span className="text-sm font-black tracking-tight" style={{ fontFamily: "DM Sans, sans-serif", letterSpacing: "-0.5px" }}>
+        <span style={{ color: "white" }}>Growth</span>
+        <span style={{ background: "linear-gradient(90deg,#a78bfa,#60a5fa,#34d399)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+          X
+        </span>
+      </span>
+    </motion.div>
+  );
 
   return (
     <>
@@ -62,59 +111,7 @@ export default function Sidebar() {
           borderBottom: "1px solid rgba(255,255,255,0.06)",
         }}
       >
-        <motion.div
-  initial={{ opacity: 0 }}
-  animate={{ opacity: 1 }}
-  exit={{ opacity: 0 }}
-  className="flex items-center gap-2 whitespace-nowrap"
->
-  {/* GX Box */}
-  <motion.div
-    initial={{ scale: 0.9, opacity: 0 }}
-    animate={{ scale: 1, opacity: 1 }}
-    whileHover={{ scale: 1.05 }}
-    transition={{ duration: 0.3 }}
-    className="flex items-center justify-center rounded-xl"
-    style={{
-      width: "34px",
-      height: "34px",
-      background: "linear-gradient(135deg,#8b5cf6,#60a5fa,#34d399)",
-      boxShadow: "0 6px 20px rgba(139,92,246,0.35)",
-    }}
-  >
-    <span
-      style={{
-        color: "white",
-        fontWeight: 900,
-        fontSize: "12px",
-        fontFamily: "DM Sans, sans-serif",
-        letterSpacing: "-0.5px",
-      }}
-    >
-      GX
-    </span>
-  </motion.div>
-
-  {/* Text */}
-  <span
-    className="text-sm font-black tracking-tight"
-    style={{
-      fontFamily: "DM Sans, sans-serif",
-      letterSpacing: "-0.5px",
-    }}
-  >
-    <span style={{ color: "white" }}>Growth</span>
-    <span
-      style={{
-        background: "linear-gradient(90deg,#a78bfa,#60a5fa,#34d399)",
-        WebkitBackgroundClip: "text",
-        WebkitTextFillColor: "transparent",
-      }}
-    >
-      X
-    </span>
-  </span>
-</motion.div>
+        <Logo />
         <button onClick={() => setMobileOpen(true)} className="text-gray-400 hover:text-white transition-colors">
           <Menu size={20} />
         </button>
@@ -137,41 +134,20 @@ export default function Sidebar() {
               animate={{ x: 0 }}
               exit={{ x: -300 }}
               transition={{ type: "spring", stiffness: 280, damping: 28 }}
-              className="fixed top-0 left-0 w-[270px] h-full z-50 flex flex-col"
-              style={{
-                background: "#0a0a0e",
-                borderRight: "1px solid rgba(255,255,255,0.07)",
-              }}
+              className="fixed top-0 left-0 w-[270px] h-full z-50 flex flex-col overflow-hidden"
+              style={{ background: "#0a0a0e", borderRight: "1px solid rgba(255,255,255,0.07)" }}
             >
-              <div className="flex items-center justify-between px-5 py-5">
-                
-               <motion.span
-  initial={{ opacity: 0 }}
-  animate={{ opacity: 1 }}
-  exit={{ opacity: 0 }}
-  className="text-sm font-black tracking-tight whitespace-nowrap"
-  style={{
-    fontFamily: "DM Sans, sans-serif",
-    letterSpacing: "-0.5px",
-  }}
->
-  <span style={{ color: "white" }}>Growth</span>
-  <span
-    style={{
-      background: "linear-gradient(90deg,#a78bfa,#60a5fa,#34d399)",
-      WebkitBackgroundClip: "text",
-      WebkitTextFillColor: "transparent",
-    }}
-  >
-    X
-  </span>
-</motion.span>
+              {/* ambient glow */}
+              <div className="absolute -top-20 -left-10 w-60 h-60 pointer-events-none"
+                style={{ background: "radial-gradient(circle, rgba(139,92,246,0.10), transparent 70%)" }} />
+              <div className="relative flex items-center justify-between px-5 py-5">
+                <Logo withMark={false} />
                 <button onClick={() => setMobileOpen(false)} className="text-gray-600 hover:text-white">
                   <X size={18} />
                 </button>
               </div>
               <SidebarContent
-                menuItems={menuItems}
+                navSections={navSections}
                 pathname={pathname}
                 user={user}
                 iconColors={iconColors}
@@ -188,71 +164,15 @@ export default function Sidebar() {
         animate={{ width: desktopOpen ? 240 : 68 }}
         transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
         className="hidden md:flex flex-col h-screen relative flex-shrink-0"
-        style={{
-          background: "#090910",
-          borderRight: "1px solid rgba(255,255,255,0.06)",
-          overflow: "hidden",
-        }}
+        style={{ background: "#090910", borderRight: "1px solid rgba(255,255,255,0.06)", overflow: "hidden" }}
       >
-        {/* Logo row */}
-        <div className="flex items-center justify-between px-4 py-5 flex-shrink-0">
-          <AnimatePresence>
-            {desktopOpen && (
-              <motion.div
-  initial={{ opacity: 0 }}
-  animate={{ opacity: 1 }}
-  exit={{ opacity: 0 }}
-  className="flex items-center gap-2 whitespace-nowrap"
->
-  {/* GX Box */}
-  <motion.div
-    initial={{ scale: 0.9, opacity: 0 }}
-    animate={{ scale: 1, opacity: 1 }}
-    whileHover={{ scale: 1.05 }}
-    transition={{ duration: 0.3 }}
-    className="flex items-center justify-center rounded-xl"
-    style={{
-      width: "34px",
-      height: "34px",
-      background: "linear-gradient(135deg,#8b5cf6,#60a5fa,#34d399)",
-      boxShadow: "0 6px 20px rgba(139,92,246,0.35)",
-    }}
-  >
-    <span
-      style={{
-        color: "white",
-        fontWeight: 900,
-        fontSize: "12px",
-        fontFamily: "DM Sans, sans-serif",
-        letterSpacing: "-0.5px",
-      }}
-    >
-      GX
-    </span>
-  </motion.div>
+        {/* ambient glow */}
+        <div className="absolute -top-24 -left-8 w-64 h-64 pointer-events-none"
+          style={{ background: "radial-gradient(circle, rgba(139,92,246,0.10), transparent 70%)" }} />
 
-  {/* Text */}
-  <span
-    className="text-sm font-black tracking-tight"
-    style={{
-      fontFamily: "DM Sans, sans-serif",
-      letterSpacing: "-0.5px",
-    }}
-  >
-    <span style={{ color: "white" }}>Growth</span>
-    <span
-      style={{
-        background: "linear-gradient(90deg,#a78bfa,#60a5fa,#34d399)",
-        WebkitBackgroundClip: "text",
-        WebkitTextFillColor: "transparent",
-      }}
-    >
-      X
-    </span>
-  </span>
-</motion.div>
-            )}
-          </AnimatePresence>
+        {/* Logo row */}
+        <div className="relative flex items-center justify-between px-4 py-5 flex-shrink-0">
+          <AnimatePresence>{desktopOpen && <Logo />}</AnimatePresence>
           <button
             onClick={() => setDesktopOpen(!desktopOpen)}
             className="text-gray-600 hover:text-white transition-colors ml-auto"
@@ -264,7 +184,7 @@ export default function Sidebar() {
         </div>
 
         <SidebarContent
-          menuItems={menuItems}
+          navSections={navSections}
           pathname={pathname}
           user={user}
           iconColors={iconColors}
@@ -275,97 +195,100 @@ export default function Sidebar() {
   );
 }
 
-function SidebarContent({ menuItems, pathname, user, iconColors, collapsed, close }: any) {
+function SidebarContent({ navSections, pathname, user, iconColors, collapsed, close }: any) {
   return (
-    <div className="flex flex-col flex-1 overflow-hidden">
+    <div className="relative flex flex-col flex-1 overflow-hidden">
       {/* Nav */}
-      <nav className="flex-1 px-3 py-2 overflow-y-auto space-y-0.5">
-        {menuItems.map((item: any, i: number) => {
-          const Icon = item.icon;
-          const isActive = pathname === item.path;
-          const color = iconColors[item.path] || "#888";
+      <nav className="flex-1 px-3 py-2 overflow-y-auto">
+        {navSections.map((section: any, si: number) => (
+          <div key={si} className={si === 0 ? "" : "mt-4"}>
+            {/* Section label (or divider when collapsed) */}
+            {section.label &&
+              (collapsed ? (
+                <div className="h-px mx-2 mb-2" style={{ background: "rgba(255,255,255,0.06)" }} />
+              ) : (
+                <p className="px-3 mb-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-gray-600">
+                  {section.label}
+                </p>
+              ))}
 
-          return (
-            <Link key={i} href={item.path} onClick={close}>
-              <motion.div
-                whileHover={{ x: 2 }}
-                className="relative flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-150 group"
-                style={{
-                  background: isActive
-                    ? `${color}14`
-                    : "transparent",
-                  border: isActive ? `1px solid ${color}25` : "1px solid transparent",
-                }}
-              >
-                {/* Active left bar */}
-                {isActive && (
-                  <motion.div
-                    layoutId="activeBar"
-                    className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-5 rounded-full"
-                    style={{ background: color }}
-                  />
-                )}
+            <div className="space-y-0.5">
+              {section.items.map((item: any, i: number) => {
+                const Icon = item.icon;
+                const isActive = pathname === item.path;
+                const color = iconColors[item.path] || "#888";
 
-                <div
-                  className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
-                  style={{
-                    background: isActive ? `${color}25` : "rgba(255,255,255,0.04)",
-                  }}
-                >
-                  <Icon size={15} style={{ color: isActive ? color : "#555" }} />
-                </div>
-
-                <AnimatePresence>
-                  {!collapsed && (
-                    <motion.span
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      className="text-[13px] font-medium whitespace-nowrap"
-                      style={{ color: isActive ? "white" : "#666" }}
+                return (
+                  <Link key={i} href={item.path} onClick={close}>
+                    <motion.div
+                      whileHover={{ x: 2 }}
+                      className="relative flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-150 group"
+                      style={{
+                        background: isActive
+                          ? `linear-gradient(90deg, ${color}1f, ${color}08)`
+                          : "transparent",
+                        border: isActive ? `1px solid ${color}30` : "1px solid transparent",
+                        boxShadow: isActive ? `0 0 18px ${color}1f` : "none",
+                      }}
                     >
-                      {item.name}
-                    </motion.span>
-                  )}
-                </AnimatePresence>
+                      {/* Active left bar */}
+                      {isActive && (
+                        <motion.div
+                          layoutId="activeBar"
+                          className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-full"
+                          style={{ background: color, boxShadow: `0 0 8px ${color}` }}
+                        />
+                      )}
 
-                {/* Tooltip on collapsed */}
-                {collapsed && (
-                  <div
-                    className="absolute left-14 px-2.5 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap
-                    opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-50"
-                    style={{ background: "#1a1a1a", border: "1px solid rgba(255,255,255,0.1)", color: "white" }}
-                  >
-                    {item.name}
-                  </div>
-                )}
-              </motion.div>
-            </Link>
-          );
-        })}
+                      <div
+                        className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 transition-colors"
+                        style={{ background: isActive ? `${color}25` : "rgba(255,255,255,0.04)" }}
+                      >
+                        <Icon size={15} style={{ color: isActive ? color : "#555" }} />
+                      </div>
+
+                      <AnimatePresence>
+                        {!collapsed && (
+                          <motion.span
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            className="text-[13px] font-medium whitespace-nowrap"
+                            style={{ color: isActive ? "white" : "#6b7280" }}
+                          >
+                            {item.name}
+                          </motion.span>
+                        )}
+                      </AnimatePresence>
+
+                      {/* Tooltip on collapsed */}
+                      {collapsed && (
+                        <div
+                          className="absolute left-14 px-2.5 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap
+                          opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-50"
+                          style={{ background: "#1a1a1a", border: "1px solid rgba(255,255,255,0.1)", color: "white" }}
+                        >
+                          {item.name}
+                        </div>
+                      )}
+                    </motion.div>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        ))}
       </nav>
 
       {/* User footer */}
-      <div
-        className="px-3 py-4 flex-shrink-0"
-        style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}
-      >
+      <div className="px-3 py-4 flex-shrink-0" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
         <div className="flex items-center gap-3">
           <UserButton />
           <AnimatePresence>
             {!collapsed && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="min-w-0"
-              >
-                <p className="text-[13px] font-medium text-white truncate">
-                  {user.firstName || "User"}
-                </p>
-                <p className="text-[11px] text-gray-600 truncate">
-                  {user.primaryEmailAddress?.emailAddress}
-                </p>
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="min-w-0">
+                <p className="text-[13px] font-medium text-white truncate">{user.firstName || "User"}</p>
+                <p className="text-[11px] text-gray-600 truncate">{user.primaryEmailAddress?.emailAddress}</p>
               </motion.div>
             )}
           </AnimatePresence>
