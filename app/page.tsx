@@ -607,9 +607,13 @@ export default function DashboardLayout() {
       >
         <div className="absolute top-0 left-0 right-0 h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(139,92,246,0.3), transparent)" }} />
         <p className="text-[11px] tracking-[0.2em] uppercase text-purple-400 font-semibold mb-2">AI Productivity Score</p>
-        <div className="text-5xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-          {aiData?.score || 0}%
-        </div>
+        {aiLoading || !aiData ? (
+          <div className="h-12 w-24 mx-auto rounded-xl bg-white/5 animate-pulse" />
+        ) : (
+          <div className="text-5xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+            {aiData.score ?? 0}%
+          </div>
+        )}
       </motion.div>
     </div>
   );

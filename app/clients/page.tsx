@@ -34,11 +34,18 @@ export default function ClientsPage() {
   const [search, setSearch] = useState("");
   const [form, setForm] = useState({ name: "", company: "", email: "", status: "active" });
   const [adding, setAdding] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const fetchClients = async () => {
-    const res = await fetch("/api/clients");
-    const data = await res.json();
-    setClients(data);
+    try {
+      const res = await fetch("/api/clients");
+      const data = await res.json();
+      setClients(Array.isArray(data) ? data : []);
+    } catch {
+      setClients([]);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => { fetchClients(); }, []);
@@ -170,12 +177,21 @@ export default function ClientsPage() {
         />
       </motion.div>
 
+      {/* Loading skeleton */}
+      {loading && (
+        <div className="space-y-2">
+          {[0, 1, 2, 3, 4].map((i) => (
+            <div key={i} className="h-14 rounded-xl animate-pulse" style={{ background: "rgba(255,255,255,0.03)" }} />
+          ))}
+        </div>
+      )}
+
       {/* Desktop Table */}
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.25 }}
-        className="hidden md:block rounded-2xl overflow-hidden"
+        className={`${loading ? "hidden" : "hidden md:block"} rounded-2xl overflow-hidden`}
         style={{ border: "1px solid rgba(255,255,255,0.06)" }}
       >
         <table className="w-full text-sm">
@@ -213,8 +229,8 @@ export default function ClientsPage() {
                         <span className="font-medium text-white">{client.name}</span>
                       </div>
                     </td>
-                    <td className="px-5 py-4 text-gray-400">{client.company}</td>
-                    <td className="px-5 py-4 text-gray-500 text-xs">{client.email}</td>
+                    <td className="px-5 py-4 text-gray-300">{client.company}</td>
+                    <td className="px-5 py-4 text-gray-400 text-xs">{client.email}</td>
                     <td className="px-5 py-4">
                       <span
                         className="flex items-center gap-1.5 w-fit px-2.5 py-1 rounded-full text-xs font-semibold"
@@ -224,13 +240,14 @@ export default function ClientsPage() {
                         {sc.label}
                       </span>
                     </td>
-                    <td className="px-5 py-4 text-xs text-gray-600">{formatTime(client.createdAt)}</td>
+                    <td className="px-5 py-4 text-xs text-gray-500">{formatTime(client.createdAt)}</td>
                     <td className="px-5 py-4 text-right">
                       <motion.button
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
                         onClick={() => deleteClient(client._id)}
-                        className="opacity-0 group-hover:opacity-100 transition-opacity"
+                        aria-label={`Delete ${client.name}`}
+                        className="opacity-0 group-hover:opacity-100 focus-visible:opacity-100 transition-opacity rounded-md outline-none focus-visible:ring-2 focus-visible:ring-red-400/60"
                         style={{ color: "#ef4444" }}
                       >
                         <Trash2 size={15} />
@@ -245,7 +262,7 @@ export default function ClientsPage() {
       </motion.div>
 
       {/* Mobile Cards */}
-      <div className="md:hidden flex flex-col gap-3">
+      <div className={`${loading ? "hidden" : "md:hidden"} flex flex-col gap-3`}>
         <AnimatePresence>
           {filtered.map((client, i) => {
             const sc = statusConfig[client.status] || statusConfig.inactive;
@@ -267,21 +284,21 @@ export default function ClientsPage() {
                     </div>
                     <div>
                       <p className="font-semibold text-white">{client.name}</p>
-                      <p className="text-xs text-gray-500">{client.company}</p>
+                      <p className="text-xs text-gray-400">{client.company}</p>
                     </div>
                   </div>
-                  <button onClick={() => deleteClient(client._id)} style={{ color: "#ef4444" }}>
+                  <button onClick={() => deleteClient(client._id)} aria-label={`Delete ${client.name}`} className="rounded-md outline-none focus-visible:ring-2 focus-visible:ring-red-400/60" style={{ color: "#ef4444" }}>
                     <Trash2 size={15} />
                   </button>
                 </div>
-                <p className="text-xs text-gray-500 mb-3">{client.email}</p>
+                <p className="text-xs text-gray-400 mb-3">{client.email}</p>
                 <div className="flex items-center justify-between">
                   <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold"
                     style={{ background: sc.bg, color: sc.color }}>
                     <span className="w-1.5 h-1.5 rounded-full" style={{ background: sc.dot }} />
                     {sc.label}
                   </span>
-                  <span className="text-xs text-gray-600">{formatTime(client.createdAt)}</span>
+                  <span className="text-xs text-gray-500">{formatTime(client.createdAt)}</span>
                 </div>
               </motion.div>
             );
@@ -289,8 +306,10 @@ export default function ClientsPage() {
         </AnimatePresence>
       </div>
 
-      {filtered.length === 0 && (
-        <div className="text-center mt-20 text-gray-600 text-sm">No clients found</div>
+      {!loading && filtered.length === 0 && (
+        <div className="text-center mt-20 text-gray-500 text-sm">
+          {search ? "No clients match your search" : "No clients yet — add your first above ✨"}
+        </div>
       )}
     </div>
   );

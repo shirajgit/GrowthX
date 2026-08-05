@@ -10,6 +10,14 @@ const SettingSchema = new mongoose.Schema(
       type: String,
       default: "dark",
     },
+
+    // Privacy preferences (persisted from the Privacy & Data page)
+    privacy: {
+      analytics: { type: Boolean, default: true },
+      ai_context: { type: Boolean, default: true },
+      crash_reports: { type: Boolean, default: false },
+      marketing: { type: Boolean, default: true },
+    },
   },
   { timestamps: true }
 );

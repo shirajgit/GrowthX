@@ -3,7 +3,7 @@
 import "./globals.css";
 import { ClerkProvider, SignInButton, UserButton, useUser } from "@clerk/nextjs";
 import Sidebar from "@/components/Sidebar";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, MotionConfig } from "framer-motion";
 import { useState, useEffect } from "react";
 
 function LayoutContent({ children }: { children: React.ReactNode }) {
@@ -174,7 +174,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body style={{ margin: 0, padding: 0 }}>
         <ClerkProvider>
-          <LayoutContent>{children}</LayoutContent>
+          <MotionConfig reducedMotion="user">
+            <LayoutContent>{children}</LayoutContent>
+          </MotionConfig>
         </ClerkProvider>
       </body>
     </html>
