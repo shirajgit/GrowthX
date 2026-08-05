@@ -1,14 +1,14 @@
 "use client";
 
 import "./globals.css";
-import { ClerkProvider, SignInButton, UserButton, useUser } from "@clerk/nextjs";
+import { ClerkProvider, useUser } from "@clerk/nextjs";
 import Sidebar from "@/components/Sidebar";
-import { motion, AnimatePresence, MotionConfig } from "framer-motion";
-import { useState, useEffect } from "react";
+import LandingPage from "@/components/LandingPage";
+import { motion, MotionConfig } from "framer-motion";
+import { useEffect } from "react";
 
 function LayoutContent({ children }: { children: React.ReactNode }) {
   const { isSignedIn, isLoaded } = useUser();
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!isLoaded || !isSignedIn) return;
@@ -40,106 +40,8 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
       </div>
 
       {!isSignedIn ? (
-        /* ---- AUTH SCREEN ---- */
-        <div className="relative flex flex-col min-h-screen">
-          {/* Top bar */}
-          <div className="flex items-center justify-between px-8 py-5"
-            style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
-            <span className="text-lg font-bold tracking-tight"
-              style={{
-                background: "linear-gradient(90deg, #fff 0%, #666 100%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}>
-              GrowthX
-            </span>
-            <SignInButton mode="modal">
-              <button className="text-sm px-4 py-2 rounded-xl font-medium transition-all hover:scale-105"
-                style={{
-                  background: "rgba(255,255,255,0.06)",
-                  border: "1px solid rgba(255,255,255,0.1)",
-                  color: "white",
-                }}>
-                Sign In
-              </button>
-            </SignInButton>
-          </div>
-
-          {/* Hero */}
-          <div className="flex-1 flex items-center justify-center px-4">
-            <motion.div
-              initial={{ opacity: 0, y: 30, scale: 0.97 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-              className="w-full max-w-md text-center"
-            >
-              {/* Logo mark */}
-              <motion.div
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ delay: 0.1, duration: 0.5 }}
-                className="w-16 h-16 mx-auto rounded-2xl flex items-center justify-center text-xl font-black mb-8"
-                style={{
-                  background: "linear-gradient(135deg, rgba(139,92,246,0.3), rgba(59,130,246,0.2))",
-                  border: "1px solid rgba(139,92,246,0.3)",
-                  boxShadow: "0 0 40px rgba(139,92,246,0.2)",
-                }}
-              >
-                GX
-              </motion.div>
-
-              <motion.h1
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="text-4xl font-black tracking-tight mb-3"
-              >
-                Welcome back
-              </motion.h1>
-
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.3 }}
-                className="text-gray-500 text-sm mb-10 leading-relaxed"
-              >
-                Your all-in-one productivity workspace.<br />
-                Tasks, projects, clients, and AI — all in one place.
-              </motion.p>
-
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
-              >
-                <SignInButton mode="modal">
-                  <motion.button
-                    onClick={() => setLoading(true)}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.97 }}
-                    className="w-full py-4 rounded-2xl font-semibold text-sm transition-all"
-                    style={{
-                      background: "white",
-                      color: "black",
-                      boxShadow: "0 8px 32px rgba(255,255,255,0.15)",
-                    }}
-                  >
-                    {loading ? "Opening…" : "Continue with Clerk →"}
-                  </motion.button>
-                </SignInButton>
-              </motion.div>
-
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5 }}
-                className="text-xs text-gray-700 mt-6"
-              >
-                Enterprise-grade security · No credit card required
-              </motion.p>
-            </motion.div>
-          </div>
-        </div>
+        /* ---- LANDING PAGE ---- */
+        <LandingPage />
       ) : (
         /* ---- APP LAYOUT ---- */
         <div className="flex h-screen overflow-hidden">
