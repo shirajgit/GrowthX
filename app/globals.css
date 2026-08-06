@@ -1,14 +1,66 @@
 @import "tailwindcss";
 
 /* ─────────────────────────────────────────────────────────────
-   GrowthX base layer — global polish shared by every page
+   GrowthX theme tokens — dark (default) + light
+   Every page references these via var(--token) or the utility
+   overrides below, so a single [data-theme] flip re-skins the app.
    ───────────────────────────────────────────────────────────── */
-
-:root {
+:root,
+[data-theme="dark"] {
   color-scheme: dark;
-  --gx-accent: #8b5cf6;
+
+  --bg: #080808;
+  --bg-grad: linear-gradient(160deg, #080808 0%, #0f0f13 50%, #0a0a10 100%);
+  --nav-bg: rgba(8, 8, 8, 0.72);
+
+  /* Surfaces are white overlays on a dark base */
+  --surface-2: rgba(255, 255, 255, 0.02);
+  --surface: rgba(255, 255, 255, 0.03);
+  --surface-3: rgba(255, 255, 255, 0.05);
+  --surface-hover: rgba(255, 255, 255, 0.06);
+  --elevated: #0e0e14; /* modals, popovers */
+  --sidebar-bg: #090910;
+  --tooltip-bg: #1a1a1a;
+
+  --border-soft: rgba(255, 255, 255, 0.05);
+  --border: rgba(255, 255, 255, 0.07);
+  --border-strong: rgba(255, 255, 255, 0.1);
+
+  --text: #ffffff;
+  --text-muted: #9ca3af;
+  --text-subtle: #6b7280;
+
+  --shadow-color: rgba(0, 0, 0, 0.5);
 }
 
+[data-theme="light"] {
+  color-scheme: light;
+
+  --bg: #f6f7f9;
+  --bg-grad: linear-gradient(160deg, #ffffff 0%, #f3f4f8 50%, #eceef5 100%);
+  --nav-bg: rgba(255, 255, 255, 0.78);
+
+  /* Surfaces become subtle dark overlays on a light base */
+  --surface-2: rgba(15, 17, 21, 0.025);
+  --surface: rgba(15, 17, 21, 0.04);
+  --surface-3: rgba(15, 17, 21, 0.06);
+  --surface-hover: rgba(15, 17, 21, 0.07);
+  --elevated: #ffffff;
+  --sidebar-bg: #f0f1f5;
+  --tooltip-bg: #1a1a1a;
+
+  --border-soft: rgba(15, 17, 21, 0.08);
+  --border: rgba(15, 17, 21, 0.11);
+  --border-strong: rgba(15, 17, 21, 0.16);
+
+  --text: #0f1115;
+  --text-muted: #4b5563;
+  --text-subtle: #6b7280;
+
+  --shadow-color: rgba(15, 23, 42, 0.12);
+}
+
+/* ── Base ─────────────────────────────────────────────────────── */
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
@@ -18,22 +70,21 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-  background: #080808;
+  background: var(--bg);
+  color: var(--text);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Purple-tinted text selection to match the accent system */
 ::selection {
   background: rgba(139, 92, 246, 0.35);
   color: #fff;
 }
 
-/* Thin, dark, unobtrusive scrollbars (Firefox) */
+/* Scrollbars adapt to theme */
 * {
   scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.14) transparent;
+  scrollbar-color: color-mix(in srgb, var(--text) 16%, transparent) transparent;
 }
-
-/* Thin, dark scrollbars (WebKit/Chromium) */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -42,36 +93,70 @@ body {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.12);
+  background: color-mix(in srgb, var(--text) 14%, transparent);
   border-radius: 8px;
   border: 2px solid transparent;
   background-clip: padding-box;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.22);
+  background: color-mix(in srgb, var(--text) 26%, transparent);
   background-clip: padding-box;
 }
 
-/* Consistent keyboard-focus ring app-wide (only for keyboard nav) */
 :focus-visible {
   outline: 2px solid rgba(139, 92, 246, 0.7);
   outline-offset: 2px;
 }
-
-/* Inputs shouldn't get the browser default on top of custom styling */
 input:focus,
 textarea:focus,
 button:focus {
   outline: none;
 }
-
-/* Kill iOS tap-highlight flash on the dark theme */
 * {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Respect users who ask for less motion — neutralise the infinite
-   pulses, pings, sheens and long transitions across the whole app. */
+/* ── Theme-aware utility remaps ───────────────────────────────────
+   The app leans on Tailwind color utilities picked for a dark canvas.
+   Under a light ancestor we remap the ones that would be unreadable
+   or invisible; the dark rules AFTER them re-assert original values so
+   a nested [data-theme="dark"] island (e.g. the landing page or a
+   spotlight panel) keeps its dark styling even on a light page.
+   Both selectors are [data-theme] .class (equal specificity), so for
+   an element with BOTH ancestors the later (dark) rule wins.
+   ─────────────────────────────────────────────────────────────── */
+[data-theme="light"] .text-white { color: var(--text); }
+[data-theme="light"] .text-gray-300 { color: #374151; }
+[data-theme="light"] .text-gray-400 { color: #4b5563; }
+[data-theme="light"] .text-gray-500 { color: #6b7280; }
+[data-theme="light"] .text-gray-600 { color: #6b7280; }
+[data-theme="light"] .text-gray-700 { color: #9ca3af; }
+[data-theme="light"] .bg-white\/5 { background-color: rgba(15, 17, 21, 0.05); }
+[data-theme="light"] .bg-white\/10 { background-color: rgba(15, 17, 21, 0.08); }
+[data-theme="light"] .bg-white\/\[0\.02\] { background-color: rgba(15, 17, 21, 0.03); }
+[data-theme="light"] .bg-white\/\[0\.03\] { background-color: rgba(15, 17, 21, 0.04); }
+[data-theme="light"] .hover\:bg-white\/5:hover { background-color: rgba(15, 17, 21, 0.05); }
+[data-theme="light"] .hover\:bg-white\/\[0\.02\]:hover { background-color: rgba(15, 17, 21, 0.03); }
+[data-theme="light"] .border-white\/5 { border-color: rgba(15, 17, 21, 0.08); }
+[data-theme="light"] .border-white\/10 { border-color: rgba(15, 17, 21, 0.12); }
+
+/* Dark re-assert (must stay AFTER the light rules above) */
+[data-theme="dark"] .text-white { color: #ffffff; }
+[data-theme="dark"] .text-gray-300 { color: #d1d5db; }
+[data-theme="dark"] .text-gray-400 { color: #9ca3af; }
+[data-theme="dark"] .text-gray-500 { color: #6b7280; }
+[data-theme="dark"] .text-gray-600 { color: #4b5563; }
+[data-theme="dark"] .text-gray-700 { color: #374151; }
+[data-theme="dark"] .bg-white\/5 { background-color: rgba(255, 255, 255, 0.05); }
+[data-theme="dark"] .bg-white\/10 { background-color: rgba(255, 255, 255, 0.1); }
+[data-theme="dark"] .bg-white\/\[0\.02\] { background-color: rgba(255, 255, 255, 0.02); }
+[data-theme="dark"] .bg-white\/\[0\.03\] { background-color: rgba(255, 255, 255, 0.03); }
+[data-theme="dark"] .hover\:bg-white\/5:hover { background-color: rgba(255, 255, 255, 0.05); }
+[data-theme="dark"] .hover\:bg-white\/\[0\.02\]:hover { background-color: rgba(255, 255, 255, 0.02); }
+[data-theme="dark"] .border-white\/5 { border-color: rgba(255, 255, 255, 0.05); }
+[data-theme="dark"] .border-white\/10 { border-color: rgba(255, 255, 255, 0.1); }
+
+/* Respect reduced-motion across the whole app */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

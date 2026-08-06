@@ -41,8 +41,8 @@ const STATUS_COLORS: Record<string, string> = {
 const FALLBACK_STATUS_COLORS = ["#8b5cf6", "#06b6d4", "#f43f5e", "#eab308", "#10b981"];
 
 const cardStyle = {
-  background: "rgba(255,255,255,0.02)",
-  border: "1px solid rgba(255,255,255,0.06)",
+  background: "var(--surface-2)",
+  border: "1px solid var(--border-soft)",
 };
 
 type ChatMsg = { role: "user" | "ai"; content: string };
@@ -240,7 +240,7 @@ export default function DashboardLayout() {
       className="min-h-screen p-6 text-white space-y-5"
       style={{
         fontFamily: "'DM Sans', system-ui, sans-serif",
-        background: "linear-gradient(160deg, #080808 0%, #0f0f13 50%, #0a0a10 100%)",
+        background: "var(--bg-grad)",
       }}
     >
       {/* Ambient glows */}
@@ -260,6 +260,7 @@ export default function DashboardLayout() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+        data-theme="dark"
         className="relative rounded-[28px] overflow-hidden"
         style={{
           background: "linear-gradient(140deg, rgba(20,16,34,0.9) 0%, rgba(13,16,28,0.9) 100%)",
@@ -343,7 +344,7 @@ export default function DashboardLayout() {
             transition={{ delay: 0.1 + i * 0.07, duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
             whileHover={{ y: -3 }}
             className="relative rounded-2xl overflow-hidden p-4 group"
-            style={{ background: "rgba(255,255,255,0.025)", border: "1px solid rgba(255,255,255,0.07)" }}
+            style={{ background: "var(--surface-2)", border: "1px solid var(--border)" }}
           >
             {/* corner glow */}
             <div className="absolute -top-6 -right-6 w-20 h-20 rounded-full blur-2xl opacity-25 transition-opacity group-hover:opacity-40"
@@ -367,7 +368,7 @@ export default function DashboardLayout() {
             <p className="text-[11px] text-gray-500 tracking-wide uppercase mt-1.5">{s.title}</p>
 
             {/* comparison bar */}
-            <div className="mt-3 h-1 rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.06)" }}>
+            <div className="mt-3 h-1 rounded-full overflow-hidden" style={{ background: "var(--surface-hover)" }}>
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: `${(s.value / maxStat) * 100}%` }}
@@ -537,7 +538,7 @@ export default function DashboardLayout() {
                 {["Summarize my week", "What's overdue?", "Top leads to call"].map((q) => (
                   <button key={q} onClick={() => sendMessage(q)}
                     className="px-3 py-1.5 rounded-lg text-xs text-gray-300 transition-all hover:text-white"
-                    style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)" }}>
+                    style={{ background: "var(--surface-3)", border: "1px solid var(--border)" }}>
                     {q}
                   </button>
                 ))}
@@ -557,7 +558,7 @@ export default function DashboardLayout() {
                   style={
                     m.role === "user"
                       ? { background: "linear-gradient(135deg, rgba(139,92,246,0.35), rgba(59,130,246,0.35))", border: "1px solid rgba(139,92,246,0.4)", color: "#ede9fe", borderBottomRightRadius: 6 }
-                      : { background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)", color: "#d1d5db", borderBottomLeftRadius: 6 }
+                      : { background: "var(--surface-3)", border: "1px solid var(--border)", color: "var(--text-muted)", borderBottomLeftRadius: 6 }
                   }
                 >
                   {m.content}
@@ -568,7 +569,7 @@ export default function DashboardLayout() {
 
           {chatLoading && (
             <div className="flex justify-start">
-              <div className="px-4 py-3 rounded-2xl flex gap-1" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)" }}>
+              <div className="px-4 py-3 rounded-2xl flex gap-1" style={{ background: "var(--surface-3)", border: "1px solid var(--border)" }}>
                 {[0, 1, 2].map((d) => (
                   <span key={d} className="w-1.5 h-1.5 rounded-full bg-purple-400 animate-bounce" style={{ animationDelay: `${d * 0.15}s` }} />
                 ))}
@@ -585,7 +586,7 @@ export default function DashboardLayout() {
             onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && (e.preventDefault(), sendMessage())}
             placeholder="Message the assistant…"
             className="flex-1 bg-transparent text-sm text-white placeholder:text-gray-600 px-3 py-2 rounded-xl outline-none"
-            style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)" }}
+            style={{ background: "var(--surface)", border: "1px solid var(--border)" }}
           />
           <motion.button
             whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}

@@ -39,7 +39,7 @@ function ToggleRow({ setting, onChange }: { setting: ToggleSetting; onChange: (i
         aria-label={`${setting.label}: ${setting.value ? "on" : "off"}`}
         onClick={() => onChange(setting.id, !setting.value)}
         className="relative w-11 h-6 rounded-full flex-shrink-0 transition-colors duration-200 outline-none focus-visible:ring-2 focus-visible:ring-indigo-400/70 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a10]"
-        style={{ background: setting.value ? "linear-gradient(135deg, rgba(139,92,246,0.6), rgba(59,130,246,0.5))" : "rgba(255,255,255,0.08)", border: `1px solid ${setting.value ? "rgba(139,92,246,0.4)" : "rgba(255,255,255,0.1)"}` }}>
+        style={{ background: setting.value ? "linear-gradient(135deg, rgba(139,92,246,0.6), rgba(59,130,246,0.5))" : "var(--border-strong)", border: `1px solid ${setting.value ? "rgba(139,92,246,0.4)" : "var(--border-strong)"}` }}>
         <motion.div animate={{ x: setting.value ? 20 : 2 }} transition={{ type: "spring", stiffness: 400, damping: 28 }} className="absolute top-0.5 w-4 h-4 rounded-full" style={{ background: setting.value ? "white" : "#444" }} />
       </motion.button>
     </div>
@@ -156,7 +156,7 @@ export default function PrivacyDataPage() {
   }, [showDeleteModal]);
 
   return (
-    <div className="min-h-screen text-white" style={{ fontFamily: "'DM Sans', system-ui, sans-serif", background: "linear-gradient(160deg, #080808 0%, #0f0f13 50%, #0a0a10 100%)" }}>
+    <div className="min-h-screen text-white" style={{ fontFamily: "'DM Sans', system-ui, sans-serif", background: "var(--bg-grad)" }}>
       <div className="fixed top-0 left-0 w-[500px] h-[500px] pointer-events-none" style={{ background: "radial-gradient(circle, rgba(99,102,241,0.05) 0%, transparent 70%)" }} />
       <div className="fixed bottom-0 right-0 w-[400px] h-[400px] pointer-events-none" style={{ background: "radial-gradient(circle, rgba(239,68,68,0.03) 0%, transparent 70%)" }} />
 
@@ -178,9 +178,9 @@ export default function PrivacyDataPage() {
         {/* Privacy controls */}
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08 }} className="mb-5">
           <p className="text-[10.5px] font-semibold tracking-[0.2em] uppercase text-gray-600 px-1 mb-2">Privacy Controls</p>
-          <div className="rounded-2xl overflow-hidden" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)" }}>
+          <div className="rounded-2xl overflow-hidden" style={{ background: "var(--surface)", border: "1px solid var(--border)" }}>
             {privacySettings.map((s, i) => (
-              <motion.div key={s.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.12 + i * 0.05 }} style={{ borderTop: i > 0 ? "1px solid rgba(255,255,255,0.05)" : "none" }}>
+              <motion.div key={s.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.12 + i * 0.05 }} style={{ borderTop: i > 0 ? "1px solid var(--border-soft)" : "none" }}>
                 <ToggleRow setting={s} onChange={toggleSetting} />
               </motion.div>
             ))}
@@ -198,7 +198,7 @@ export default function PrivacyDataPage() {
         {/* Your data */}
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="mb-5">
           <p className="text-[10.5px] font-semibold tracking-[0.2em] uppercase text-gray-600 px-1 mb-2">Your Data</p>
-          <div className="rounded-2xl overflow-hidden" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)" }}>
+          <div className="rounded-2xl overflow-hidden" style={{ background: "var(--surface)", border: "1px solid var(--border)" }}>
             <div className="p-4 grid grid-cols-2 gap-2">
               {dataCategories.map((cat, i) => {
                 const Icon = cat.icon;
@@ -223,7 +223,7 @@ export default function PrivacyDataPage() {
             <div className="px-4 pb-4">
               <motion.button whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.98 }} onClick={handleExport} disabled={exporting} aria-label="Export all my data as JSON"
                 className="w-full flex items-center justify-center gap-2.5 py-3.5 rounded-xl font-semibold text-sm transition-all outline-none focus-visible:ring-2 focus-visible:ring-indigo-400/70 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a10]"
-                style={{ background: exported ? "rgba(34,197,94,0.1)" : "rgba(255,255,255,0.05)", border: `1px solid ${exported ? "rgba(34,197,94,0.25)" : "rgba(255,255,255,0.1)"}`, color: exported ? "#4ade80" : "white" }}>
+                style={{ background: exported ? "rgba(34,197,94,0.1)" : "var(--surface-3)", border: `1px solid ${exported ? "rgba(34,197,94,0.25)" : "var(--border-strong)"}`, color: exported ? "#4ade80" : "var(--text)" }}>
                 {exporting ? (<><Loader2 size={15} className="animate-spin" /> Preparing export…</>) : exported ? (<><Check size={15} /> Downloaded!</>) : (<><Download size={15} /> Export All My Data (.json)</>)}
               </motion.button>
             </div>
@@ -233,7 +233,7 @@ export default function PrivacyDataPage() {
         {/* Security info */}
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="mb-5">
           <p className="text-[10.5px] font-semibold tracking-[0.2em] uppercase text-gray-600 px-1 mb-2">Security</p>
-          <div className="rounded-2xl overflow-hidden" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)" }}>
+          <div className="rounded-2xl overflow-hidden" style={{ background: "var(--surface)", border: "1px solid var(--border)" }}>
             {[
               { icon: Lock, label: "End-to-end encryption", sub: "AES-256 at rest · TLS 1.3 in transit", color: "#34d399", badge: "Active" },
               { icon: Eye, label: "Two-factor authentication", sub: "Managed via your Clerk account", color: "#60a5fa", badge: "Via Clerk" },
@@ -241,7 +241,7 @@ export default function PrivacyDataPage() {
             ].map((item, i) => {
               const Icon = item.icon;
               return (
-                <motion.div key={item.label} whileHover={{ x: 2 }} className="flex items-center gap-4 px-4 py-3.5" style={{ borderTop: i > 0 ? "1px solid rgba(255,255,255,0.05)" : "none" }}>
+                <motion.div key={item.label} whileHover={{ x: 2 }} className="flex items-center gap-4 px-4 py-3.5" style={{ borderTop: i > 0 ? "1px solid var(--border-soft)" : "none" }}>
                   <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: `${item.color}18`, border: `1px solid ${item.color}25` }}>
                     <Icon size={15} style={{ color: item.color }} />
                   </div>
@@ -259,12 +259,12 @@ export default function PrivacyDataPage() {
         {/* Privacy policy summary */}
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.38 }} className="mb-5">
           <p className="text-[10.5px] font-semibold tracking-[0.2em] uppercase text-gray-600 px-1 mb-2">Privacy Policy Summary</p>
-          <div className="rounded-2xl p-5 space-y-4" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)" }}>
+          <div className="rounded-2xl p-5 space-y-4" style={{ background: "var(--surface-2)", border: "1px solid var(--border-soft)" }}>
             {privacyPolicySections.map((section, i) => (
               <motion.div key={section.title} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.42 + i * 0.05 }}>
                 <p className="text-xs font-bold text-white mb-1">{section.title}</p>
                 <p className="text-xs text-gray-400 leading-relaxed">{section.body}</p>
-                {i < privacyPolicySections.length - 1 && <div className="mt-4 h-px" style={{ background: "rgba(255,255,255,0.05)" }} />}
+                {i < privacyPolicySections.length - 1 && <div className="mt-4 h-px" style={{ background: "var(--surface-3)" }} />}
               </motion.div>
             ))}
             <div className="pt-2">
@@ -302,7 +302,7 @@ export default function PrivacyDataPage() {
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-black/75 backdrop-blur-sm flex items-center justify-center z-50 p-4"
             onClick={(e) => e.target === e.currentTarget && closeDeleteModal()}>
             <motion.div role="dialog" aria-modal="true" aria-labelledby="delete-modal-title" initial={{ scale: 0.93, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.93, opacity: 0 }} transition={{ duration: 0.2 }}
-              className="w-full max-w-sm rounded-2xl p-6 relative" style={{ background: "#0e0e14", border: "1px solid rgba(239,68,68,0.2)", boxShadow: "0 24px 60px rgba(0,0,0,0.5)" }}>
+              className="w-full max-w-sm rounded-2xl p-6 relative" style={{ background: "var(--elevated)", border: "1px solid rgba(239,68,68,0.2)", boxShadow: "0 24px 60px rgba(0,0,0,0.5)" }}>
               <button onClick={closeDeleteModal} aria-label="Close dialog" className="absolute top-4 right-4 text-gray-500 hover:text-white transition-colors rounded-md outline-none focus-visible:ring-2 focus-visible:ring-white/40"><X size={16} /></button>
               <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-4" style={{ background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.2)" }}>
                 <AlertTriangle size={18} style={{ color: "#ef4444" }} />
@@ -312,12 +312,12 @@ export default function PrivacyDataPage() {
               <input autoFocus value={deleteConfirm} onChange={(e) => setDeleteConfirm(e.target.value)}
                 onKeyDown={(e) => { if (e.key === "Enter" && deleteConfirm === "DELETE") handleDelete(); }}
                 aria-label="Type DELETE to confirm account deletion" placeholder="Type DELETE to confirm"
-                className="w-full px-4 py-3 rounded-xl text-sm outline-none mb-4 font-mono focus-visible:ring-2 focus-visible:ring-red-400/50" style={{ background: "rgba(255,255,255,0.05)", border: `1px solid ${deleteConfirm === "DELETE" ? "rgba(239,68,68,0.4)" : "rgba(255,255,255,0.08)"}`, color: deleteConfirm === "DELETE" ? "#ef4444" : "white" }} />
+                className="w-full px-4 py-3 rounded-xl text-sm outline-none mb-4 font-mono focus-visible:ring-2 focus-visible:ring-red-400/50" style={{ background: "var(--surface-3)", border: `1px solid ${deleteConfirm === "DELETE" ? "rgba(239,68,68,0.4)" : "var(--border-strong)"}`, color: deleteConfirm === "DELETE" ? "#ef4444" : "var(--text)" }} />
               <div className="flex gap-2">
-                <button onClick={closeDeleteModal} className="flex-1 py-2.5 rounded-xl text-sm font-medium transition-all outline-none focus-visible:ring-2 focus-visible:ring-white/40" style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)", color: "#aaa" }}>Cancel</button>
+                <button onClick={closeDeleteModal} className="flex-1 py-2.5 rounded-xl text-sm font-medium transition-all outline-none focus-visible:ring-2 focus-visible:ring-white/40" style={{ background: "var(--surface-3)", border: "1px solid var(--border-strong)", color: "#aaa" }}>Cancel</button>
                 <motion.button whileHover={deleteConfirm === "DELETE" ? { scale: 1.02 } : {}} whileTap={deleteConfirm === "DELETE" ? { scale: 0.97 } : {}} disabled={deleteConfirm !== "DELETE" || deleting} onClick={handleDelete}
                   className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-semibold transition-all"
-                  style={{ background: deleteConfirm === "DELETE" ? "rgba(239,68,68,0.15)" : "rgba(255,255,255,0.03)", border: `1px solid ${deleteConfirm === "DELETE" ? "rgba(239,68,68,0.3)" : "rgba(255,255,255,0.06)"}`, color: deleteConfirm === "DELETE" ? "#ef4444" : "#333", cursor: deleteConfirm === "DELETE" ? "pointer" : "not-allowed" }}>
+                  style={{ background: deleteConfirm === "DELETE" ? "rgba(239,68,68,0.15)" : "var(--surface)", border: `1px solid ${deleteConfirm === "DELETE" ? "rgba(239,68,68,0.3)" : "var(--surface-hover)"}`, color: deleteConfirm === "DELETE" ? "#ef4444" : "#333", cursor: deleteConfirm === "DELETE" ? "pointer" : "not-allowed" }}>
                   {deleting ? <Loader2 size={14} className="animate-spin" /> : <Trash2 size={14} />}{deleting ? "Deleting…" : "Delete Account"}
                 </motion.button>
               </div>

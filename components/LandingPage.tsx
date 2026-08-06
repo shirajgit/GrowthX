@@ -101,7 +101,7 @@ export default function LandingPage() {
   ];
 
   return (
-    <div className="relative min-h-screen overflow-x-hidden" style={{ fontFamily: "'DM Sans', system-ui, sans-serif" }}>
+    <div className="relative min-h-screen overflow-x-hidden text-white" style={{ fontFamily: "'DM Sans', system-ui, sans-serif", background: "var(--bg)" }}>
       {/* ── NAV ───────────────────────────────────────────────── */}
       <header className="sticky top-0 z-40" style={{ background: "rgba(8,8,8,0.72)", backdropFilter: "blur(16px)", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
         <div className="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between">
@@ -183,7 +183,7 @@ export default function LandingPage() {
           </motion.p>
 
           {/* Product preview mock */}
-          <motion.div initial={{ opacity: 0, y: 40, scale: 0.97 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 0.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+          <motion.div data-theme="dark" initial={{ opacity: 0, y: 40, scale: 0.97 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 0.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
             className="relative mt-16 rounded-3xl overflow-hidden text-left"
             style={{ background: "linear-gradient(140deg, rgba(20,16,34,0.9), rgba(13,16,28,0.9))", border: "1px solid rgba(139,92,246,0.18)", boxShadow: "0 40px 90px rgba(0,0,0,0.5)" }}>
             <div className="flex items-center gap-1.5 px-5 py-3" style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
@@ -268,7 +268,7 @@ export default function LandingPage() {
 
       {/* ── AI SPOTLIGHT ──────────────────────────────────────── */}
       <section id="ai" className="max-w-6xl mx-auto px-5 py-20 scroll-mt-20">
-        <div className="relative rounded-[32px] overflow-hidden p-8 sm:p-12"
+        <div data-theme="dark" className="relative rounded-[32px] overflow-hidden p-8 sm:p-12"
           style={{ background: "linear-gradient(140deg, rgba(20,16,34,0.9), rgba(13,16,28,0.9))", border: "1px solid rgba(139,92,246,0.2)" }}>
           <div className="absolute -top-24 -right-16 w-72 h-72 rounded-full blur-[120px] opacity-30 pointer-events-none" style={{ background: "rgba(139,92,246,0.5)" }} />
           <div className="relative grid lg:grid-cols-2 gap-10 items-center">

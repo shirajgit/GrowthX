@@ -28,7 +28,7 @@ const statusConfig: Record<string, { label: string; color: string; bg: string; b
 function StatCard({ label, value, color, icon: Icon, delay = 0 }: any) {
   return (
     <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay }} whileHover={{ y: -2 }}
-      className="relative rounded-2xl p-4 overflow-hidden" style={{ background: "rgba(255,255,255,0.025)", border: "1px solid rgba(255,255,255,0.07)" }}>
+      className="relative rounded-2xl p-4 overflow-hidden" style={{ background: "var(--surface-2)", border: "1px solid var(--border)" }}>
       <div className="absolute -top-6 -right-6 w-20 h-20 rounded-full blur-2xl opacity-20" style={{ background: color }} />
       <div className="w-8 h-8 rounded-lg flex items-center justify-center mb-2" style={{ background: `${color}1f`, border: `1px solid ${color}40` }}>
         <Icon size={15} style={{ color }} />
@@ -89,7 +89,7 @@ export default function LeadsPage() {
   const rate = leads.length ? Math.round((converted / leads.length) * 100) : 0;
 
   return (
-    <div className="min-h-screen text-white p-4 sm:p-6" style={{ fontFamily: "'DM Sans', system-ui, sans-serif", background: "linear-gradient(160deg, #080808 0%, #0f0f13 50%, #0a0a10 100%)" }}>
+    <div className="min-h-screen text-white p-4 sm:p-6" style={{ fontFamily: "'DM Sans', system-ui, sans-serif", background: "var(--bg-grad)" }}>
       <div className="fixed top-0 left-0 w-[500px] h-[500px] pointer-events-none" style={{ background: "radial-gradient(circle, rgba(248,113,113,0.05) 0%, transparent 70%)" }} />
 
       {/* Header */}
@@ -121,14 +121,14 @@ export default function LeadsPage() {
       <AnimatePresence>
         {showForm && (
           <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }}
-            className="rounded-2xl p-5 mb-6 overflow-hidden" style={{ background: "rgba(255,255,255,0.03)", border: `1px solid ${ACCENT}25` }}>
+            className="rounded-2xl p-5 mb-6 overflow-hidden" style={{ background: "var(--surface)", border: `1px solid ${ACCENT}25` }}>
             <p className="text-[11px] tracking-[0.2em] uppercase text-gray-600 font-semibold mb-4">Add Lead</p>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
               {[{ key: "name", placeholder: "Name" }, { key: "company", placeholder: "Company" }, { key: "email", placeholder: "Email" }, { key: "phone", placeholder: "Phone" }, { key: "work", placeholder: "Work type" }].map((f) => (
                 <input key={f.key} value={(form as any)[f.key]} onChange={(e) => setForm({ ...form, [f.key]: e.target.value })} placeholder={f.placeholder}
-                  className="px-4 py-3 rounded-xl text-sm outline-none col-span-1" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", color: "white" }} />
+                  className="px-4 py-3 rounded-xl text-sm outline-none col-span-1" style={{ background: "var(--surface-3)", border: "1px solid var(--border-strong)", color: "var(--text)" }} />
               ))}
-              <select value={form.status} onChange={(e) => setForm({ ...form, status: e.target.value })} className="px-4 py-3 rounded-xl text-sm outline-none" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", color: "white" }}>
+              <select value={form.status} onChange={(e) => setForm({ ...form, status: e.target.value })} className="px-4 py-3 rounded-xl text-sm outline-none" style={{ background: "var(--surface-3)", border: "1px solid var(--border-strong)", color: "var(--text)" }}>
                 {Object.entries(statusConfig).map(([key, sc]) => <option key={key} value={key}>{sc.label}</option>)}
               </select>
             </div>
@@ -143,14 +143,14 @@ export default function LeadsPage() {
       {/* Filters + search */}
       <div className="flex flex-wrap items-center gap-2 mb-5">
         <button onClick={() => setFilter("all")} className="px-3 py-1.5 rounded-full text-xs font-semibold transition-all"
-          style={{ background: filter === "all" ? "rgba(255,255,255,0.1)" : "rgba(255,255,255,0.04)", border: `1px solid ${filter === "all" ? "rgba(255,255,255,0.2)" : "rgba(255,255,255,0.07)"}`, color: filter === "all" ? "white" : "#6b7280" }}>
+          style={{ background: filter === "all" ? "var(--border-strong)" : "var(--surface-3)", border: `1px solid ${filter === "all" ? "var(--border-strong)" : "var(--border)"}`, color: filter === "all" ? "var(--text)" : "#6b7280" }}>
           All {leads.length}
         </button>
         {Object.entries(statusConfig).map(([key, sc]) => {
           const count = leads.filter((l) => l.status === key).length;
           return (
             <button key={key} onClick={() => setFilter(filter === key ? "all" : key)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition-all"
-              style={{ background: filter === key ? sc.bg : "rgba(255,255,255,0.04)", border: `1px solid ${filter === key ? sc.border : "rgba(255,255,255,0.07)"}`, color: filter === key ? sc.color : "#6b7280" }}>
+              style={{ background: filter === key ? sc.bg : "var(--surface-3)", border: `1px solid ${filter === key ? sc.border : "var(--border)"}`, color: filter === key ? sc.color : "#6b7280" }}>
               {sc.label} <span className="opacity-60">{count}</span>
             </button>
           );
@@ -158,15 +158,15 @@ export default function LeadsPage() {
         <div className="relative ml-auto">
           <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-600" />
           <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search…" className="pl-8 pr-4 py-1.5 rounded-full text-xs outline-none"
-            style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)", color: "white", width: "150px" }} />
+            style={{ background: "var(--surface-3)", border: "1px solid var(--border)", color: "var(--text)", width: "150px" }} />
         </div>
       </div>
 
       {/* Desktop table */}
-      <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.22 }} className="hidden md:block rounded-2xl overflow-hidden" style={{ border: "1px solid rgba(255,255,255,0.06)" }}>
+      <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.22 }} className="hidden md:block rounded-2xl overflow-hidden" style={{ border: "1px solid var(--border-soft)" }}>
         <table className="w-full text-sm">
           <thead>
-            <tr style={{ background: "rgba(255,255,255,0.03)", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+            <tr style={{ background: "var(--surface)", borderBottom: "1px solid var(--border-soft)" }}>
               {["Lead", "Company", "Email", "Work", "Status", "Actions"].map((h) => (
                 <th key={h} className="text-left px-5 py-3.5 text-[11px] tracking-[0.15em] uppercase text-gray-600 font-semibold">{h}</th>
               ))}
@@ -174,14 +174,14 @@ export default function LeadsPage() {
           </thead>
           <tbody>
             {loading ? (
-              [0, 1, 2, 3].map((i) => <tr key={i}><td colSpan={6} className="px-5 py-4"><div className="h-6 rounded animate-pulse" style={{ background: "rgba(255,255,255,0.04)" }} /></td></tr>)
+              [0, 1, 2, 3].map((i) => <tr key={i}><td colSpan={6} className="px-5 py-4"><div className="h-6 rounded animate-pulse" style={{ background: "var(--surface-3)" }} /></td></tr>)
             ) : (
               <AnimatePresence>
                 {filtered.map((lead, i) => {
                   const sc = statusConfig[lead.status] || statusConfig.new;
                   return (
                     <motion.tr key={lead._id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ delay: i * 0.03 }}
-                      className="group hover:bg-white/[0.02] transition-colors" style={{ borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
+                      className="group hover:bg-white/[0.02] transition-colors" style={{ borderBottom: "1px solid var(--border-soft)" }}>
                       <td className="px-5 py-4">
                         <div className="flex items-center gap-3">
                           <div className="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold" style={{ background: sc.bg, color: sc.color }}>{lead.name.charAt(0).toUpperCase()}</div>
@@ -217,7 +217,7 @@ export default function LeadsPage() {
         {filtered.map((lead, i) => {
           const sc = statusConfig[lead.status] || statusConfig.new;
           return (
-            <motion.div key={lead._id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }} className="rounded-2xl p-4" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)" }}>
+            <motion.div key={lead._id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }} className="rounded-2xl p-4" style={{ background: "var(--surface)", border: "1px solid var(--border)" }}>
               <div className="flex justify-between items-start mb-2">
                 <div className="flex items-center gap-3">
                   <div className="w-9 h-9 rounded-lg flex items-center justify-center text-xs font-bold" style={{ background: sc.bg, color: sc.color }}>{lead.name.charAt(0).toUpperCase()}</div>
@@ -246,7 +246,7 @@ export default function LeadsPage() {
         {editingLead && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4"
             onClick={(e) => e.target === e.currentTarget && setEditingLead(null)}>
-            <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }} className="w-full max-w-sm rounded-2xl p-6 relative" style={{ background: "#111", border: "1px solid rgba(255,255,255,0.1)" }}>
+            <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }} className="w-full max-w-sm rounded-2xl p-6 relative" style={{ background: "var(--elevated)", border: "1px solid var(--border-strong)" }}>
               <div className="flex items-center justify-between mb-5">
                 <h2 className="font-bold text-white">Edit Lead</h2>
                 <button onClick={() => setEditingLead(null)} className="text-gray-600 hover:text-white"><X size={16} /></button>
@@ -254,7 +254,7 @@ export default function LeadsPage() {
               <div className="space-y-3">
                 {(["name", "company", "email", "phone", "work"] as const).map((f) => (
                   <input key={f} value={editingLead[f] || ""} onChange={(e) => setEditingLead({ ...editingLead, [f]: e.target.value })} placeholder={f}
-                    className="w-full px-4 py-3 rounded-xl text-sm outline-none capitalize" style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.09)", color: "white" }} />
+                    className="w-full px-4 py-3 rounded-xl text-sm outline-none capitalize" style={{ background: "var(--surface-hover)", border: "1px solid var(--border-strong)", color: "var(--text)" }} />
                 ))}
               </div>
               <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }} onClick={saveLead} className="w-full mt-4 py-3 rounded-xl font-semibold text-sm" style={{ background: "white", color: "black" }}>Save Changes</motion.button>

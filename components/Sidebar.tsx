@@ -18,6 +18,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { UserButton, useUser } from "@clerk/nextjs";
+import ThemeToggle from "./ThemeToggle";
 
 export default function Sidebar() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -106,9 +107,9 @@ export default function Sidebar() {
       <div
         className="md:hidden fixed top-0 left-0 right-0 z-50 h-[60px] flex justify-between items-center px-5"
         style={{
-          background: "rgba(8,8,8,0.85)",
+          background: "var(--nav-bg)",
           backdropFilter: "blur(20px)",
-          borderBottom: "1px solid rgba(255,255,255,0.06)",
+          borderBottom: "1px solid var(--border-soft)",
         }}
       >
         <Logo />
@@ -135,7 +136,7 @@ export default function Sidebar() {
               exit={{ x: -300 }}
               transition={{ type: "spring", stiffness: 280, damping: 28 }}
               className="fixed top-0 left-0 w-[270px] h-full z-50 flex flex-col overflow-hidden"
-              style={{ background: "#0a0a0e", borderRight: "1px solid rgba(255,255,255,0.07)" }}
+              style={{ background: "var(--sidebar-bg)", borderRight: "1px solid var(--border)" }}
             >
               {/* ambient glow */}
               <div className="absolute -top-20 -left-10 w-60 h-60 pointer-events-none"
@@ -164,7 +165,7 @@ export default function Sidebar() {
         animate={{ width: desktopOpen ? 240 : 68 }}
         transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
         className="hidden md:flex flex-col h-screen relative flex-shrink-0"
-        style={{ background: "#090910", borderRight: "1px solid rgba(255,255,255,0.06)", overflow: "hidden" }}
+        style={{ background: "var(--sidebar-bg)", borderRight: "1px solid var(--border-soft)", overflow: "hidden" }}
       >
         {/* ambient glow */}
         <div className="absolute -top-24 -left-8 w-64 h-64 pointer-events-none"
@@ -205,7 +206,7 @@ function SidebarContent({ navSections, pathname, user, iconColors, collapsed, cl
             {/* Section label (or divider when collapsed) */}
             {section.label &&
               (collapsed ? (
-                <div className="h-px mx-2 mb-2" style={{ background: "rgba(255,255,255,0.06)" }} />
+                <div className="h-px mx-2 mb-2" style={{ background: "var(--border-soft)" }} />
               ) : (
                 <p className="px-3 mb-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-gray-600">
                   {section.label}
@@ -242,7 +243,7 @@ function SidebarContent({ navSections, pathname, user, iconColors, collapsed, cl
 
                       <div
                         className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 transition-colors"
-                        style={{ background: isActive ? `${color}25` : "rgba(255,255,255,0.04)" }}
+                        style={{ background: isActive ? `${color}25` : "var(--surface-3)" }}
                       >
                         <Icon size={15} style={{ color: isActive ? color : "#555" }} />
                       </div>
@@ -254,7 +255,7 @@ function SidebarContent({ navSections, pathname, user, iconColors, collapsed, cl
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                             className="text-[13px] font-medium whitespace-nowrap"
-                            style={{ color: isActive ? "white" : "#6b7280" }}
+                            style={{ color: isActive ? "var(--text)" : "#6b7280" }}
                           >
                             {item.name}
                           </motion.span>
@@ -266,7 +267,7 @@ function SidebarContent({ navSections, pathname, user, iconColors, collapsed, cl
                         <div
                           className="absolute left-14 px-2.5 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap
                           opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-50"
-                          style={{ background: "#1a1a1a", border: "1px solid rgba(255,255,255,0.1)", color: "white" }}
+                          style={{ background: "var(--tooltip-bg)", border: "1px solid var(--border-strong)", color: "#fff" }}
                         >
                           {item.name}
                         </div>
@@ -280,8 +281,9 @@ function SidebarContent({ navSections, pathname, user, iconColors, collapsed, cl
         ))}
       </nav>
 
-      {/* User footer */}
-      <div className="px-3 py-4 flex-shrink-0" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+      {/* Theme toggle + user footer */}
+      <div className="px-3 py-4 flex-shrink-0 space-y-3" style={{ borderTop: "1px solid var(--border-soft)" }}>
+        <ThemeToggle variant="pill" collapsed={collapsed} />
         <div className="flex items-center gap-3">
           <UserButton />
           <AnimatePresence>

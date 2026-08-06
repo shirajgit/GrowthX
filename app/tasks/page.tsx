@@ -34,7 +34,7 @@ function StatCard({ label, value, color, icon: Icon, delay = 0 }: any) {
       initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay }}
       whileHover={{ y: -2 }}
       className="relative rounded-2xl p-4 overflow-hidden"
-      style={{ background: "rgba(255,255,255,0.025)", border: "1px solid rgba(255,255,255,0.07)" }}
+      style={{ background: "var(--surface-2)", border: "1px solid var(--border)" }}
     >
       <div className="absolute -top-6 -right-6 w-20 h-20 rounded-full blur-2xl opacity-20" style={{ background: color }} />
       <div className="w-8 h-8 rounded-lg flex items-center justify-center mb-2" style={{ background: `${color}1f`, border: `1px solid ${color}40` }}>
@@ -102,7 +102,7 @@ export default function TasksPage() {
   });
 
   return (
-    <div className="min-h-screen text-white p-4 sm:p-6" style={{ fontFamily: "'DM Sans', system-ui, sans-serif", background: "linear-gradient(160deg, #080808 0%, #0f0f13 50%, #0a0a10 100%)" }}>
+    <div className="min-h-screen text-white p-4 sm:p-6" style={{ fontFamily: "'DM Sans', system-ui, sans-serif", background: "var(--bg-grad)" }}>
       <div className="fixed top-0 right-0 w-[500px] h-[500px] pointer-events-none" style={{ background: "radial-gradient(circle, rgba(52,211,153,0.05) 0%, transparent 70%)" }} />
 
       {/* Header */}
@@ -133,7 +133,7 @@ export default function TasksPage() {
           <p className="text-[11px] tracking-[0.2em] uppercase text-emerald-400 font-semibold">Today's Progress</p>
           <p className="text-xs text-gray-500">{done} / {total} done</p>
         </div>
-        <div className="w-full h-2 rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.06)" }}>
+        <div className="w-full h-2 rounded-full overflow-hidden" style={{ background: "var(--surface-hover)" }}>
           <motion.div initial={{ width: 0 }} animate={{ width: `${progress}%` }} transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
             className="h-full rounded-full" style={{ background: `linear-gradient(90deg, ${ACCENT}80, ${ACCENT})`, boxShadow: `0 0 12px ${ACCENT}66` }} />
         </div>
@@ -148,7 +148,7 @@ export default function TasksPage() {
           onFocus={() => setFocused(true)} onBlur={() => setFocused(false)}
           placeholder="Add a new task…"
           className="flex-1 px-5 py-3.5 rounded-xl text-sm outline-none transition-all"
-          style={{ background: "rgba(255,255,255,0.04)", border: `1px solid ${focused ? `${ACCENT}66` : "rgba(255,255,255,0.08)"}`, boxShadow: focused ? `0 0 0 3px ${ACCENT}14` : "none", color: "white" }}
+          style={{ background: "var(--surface-3)", border: `1px solid ${focused ? `${ACCENT}66` : "var(--border-strong)"}`, boxShadow: focused ? `0 0 0 3px ${ACCENT}14` : "none", color: "var(--text)" }}
         />
         <motion.button whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }} onClick={addTask} disabled={adding}
           className="flex items-center gap-2 px-5 py-3.5 rounded-xl text-sm font-semibold flex-shrink-0"
@@ -162,7 +162,7 @@ export default function TasksPage() {
         {(["all", "todo", "done"] as const).map((f) => (
           <button key={f} onClick={() => setFilter(f)}
             className="px-3 py-1.5 rounded-full text-xs font-semibold capitalize transition-all"
-            style={{ background: filter === f ? `${ACCENT}1f` : "rgba(255,255,255,0.04)", border: `1px solid ${filter === f ? `${ACCENT}50` : "rgba(255,255,255,0.07)"}`, color: filter === f ? ACCENT : "#666" }}>
+            style={{ background: filter === f ? `${ACCENT}1f` : "var(--surface-3)", border: `1px solid ${filter === f ? `${ACCENT}50` : "var(--border)"}`, color: filter === f ? ACCENT : "#666" }}>
             {f} {f === "all" ? `(${total})` : f === "todo" ? `(${todo})` : `(${done})`}
           </button>
         ))}
@@ -170,14 +170,14 @@ export default function TasksPage() {
           <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-600" />
           <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search…"
             className="pl-8 pr-4 py-1.5 rounded-full text-xs outline-none"
-            style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)", color: "white", width: "140px" }} />
+            style={{ background: "var(--surface-3)", border: "1px solid var(--border)", color: "var(--text)", width: "140px" }} />
         </div>
       </motion.div>
 
       {/* List / skeleton */}
       {loading ? (
         <div className="space-y-2">
-          {[0, 1, 2, 3].map((i) => <div key={i} className="h-14 rounded-xl animate-pulse" style={{ background: "rgba(255,255,255,0.03)" }} />)}
+          {[0, 1, 2, 3].map((i) => <div key={i} className="h-14 rounded-xl animate-pulse" style={{ background: "var(--surface)" }} />)}
         </div>
       ) : (
         <div className="space-y-2">
@@ -188,12 +188,12 @@ export default function TasksPage() {
                 transition={{ delay: i * 0.03, duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
                 whileHover={{ x: 2 }}
                 className="group flex items-center gap-4 rounded-xl px-4 py-3.5 transition-all duration-200"
-                style={{ background: task.status === "done" ? `${ACCENT}0a` : "rgba(255,255,255,0.03)", border: `1px solid ${task.status === "done" ? `${ACCENT}1f` : "rgba(255,255,255,0.06)"}` }}>
+                style={{ background: task.status === "done" ? `${ACCENT}0a` : "var(--surface)", border: `1px solid ${task.status === "done" ? `${ACCENT}1f` : "var(--surface-hover)"}` }}>
                 <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} onClick={() => toggleTask(task)} className="flex-shrink-0">
                   {task.status === "done" ? <CheckCircle2 size={20} style={{ color: ACCENT }} /> : <Circle size={20} className="text-gray-700 group-hover:text-gray-400 transition-colors" />}
                 </motion.button>
                 <div className="flex-1 min-w-0 cursor-pointer" onClick={() => toggleTask(task)}>
-                  <p className="text-sm font-medium leading-snug" style={{ color: task.status === "done" ? "#4b5563" : "white", textDecoration: task.status === "done" ? "line-through" : "none" }}>{task.title}</p>
+                  <p className="text-sm font-medium leading-snug" style={{ color: task.status === "done" ? "#4b5563" : "var(--text)", textDecoration: task.status === "done" ? "line-through" : "none" }}>{task.title}</p>
                   <div className="flex gap-3 mt-1">
                     {task.createdAt && <span className="text-[11px] text-gray-700">{formatTime(task.createdAt)}</span>}
                     {task.updatedAt && task.status === "done" && <span className="text-[11px]" style={{ color: ACCENT }}>✓ {formatTime(task.updatedAt)}</span>}

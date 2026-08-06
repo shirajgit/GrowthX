@@ -38,7 +38,7 @@ const formatTime = (dateString?: string) => {
 function StatCard({ label, value, color, icon: Icon, delay = 0 }: any) {
   return (
     <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay }} whileHover={{ y: -2 }}
-      className="relative rounded-2xl p-4 overflow-hidden" style={{ background: "rgba(255,255,255,0.025)", border: "1px solid rgba(255,255,255,0.07)" }}>
+      className="relative rounded-2xl p-4 overflow-hidden" style={{ background: "var(--surface-2)", border: "1px solid var(--border)" }}>
       <div className="absolute -top-6 -right-6 w-20 h-20 rounded-full blur-2xl opacity-20" style={{ background: color }} />
       <div className="w-8 h-8 rounded-lg flex items-center justify-center mb-2" style={{ background: `${color}1f`, border: `1px solid ${color}40` }}>
         <Icon size={15} style={{ color }} />
@@ -84,7 +84,7 @@ export default function JobsPage() {
   const counts = Object.keys(statusConfig).reduce((acc, key) => { acc[key] = jobs.filter((j) => j.status === key).length; return acc; }, {} as Record<string, number>);
 
   return (
-    <div className="min-h-screen text-white p-4 sm:p-6" style={{ fontFamily: "'DM Sans', system-ui, sans-serif", background: "linear-gradient(160deg, #080808 0%, #0f0f13 50%, #0a0a10 100%)" }}>
+    <div className="min-h-screen text-white p-4 sm:p-6" style={{ fontFamily: "'DM Sans', system-ui, sans-serif", background: "var(--bg-grad)" }}>
       <div className="fixed top-0 right-0 w-[500px] h-[500px] pointer-events-none" style={{ background: "radial-gradient(circle, rgba(245,158,11,0.05) 0%, transparent 70%)" }} />
 
       {/* Header */}
@@ -110,16 +110,16 @@ export default function JobsPage() {
 
       {/* Add form */}
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-        className="rounded-2xl p-5 mb-6" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)" }}>
+        className="rounded-2xl p-5 mb-6" style={{ background: "var(--surface)", border: "1px solid var(--border)" }}>
         <p className="text-[11px] tracking-[0.2em] uppercase text-gray-600 font-semibold mb-4">New Application</p>
         <div className="grid sm:grid-cols-3 gap-3">
           {[{ key: "company", placeholder: "Company name" }, { key: "role", placeholder: "Role / Position" }].map((f) => (
             <input key={f.key} value={(form as any)[f.key]} onChange={(e) => setForm({ ...form, [f.key]: e.target.value })} placeholder={f.placeholder}
               onKeyDown={(e) => e.key === "Enter" && addJob()} className="px-4 py-3 rounded-xl text-sm outline-none focus:border-amber-500/50 transition-colors"
-              style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", color: "white" }} />
+              style={{ background: "var(--surface-3)", border: "1px solid var(--border-strong)", color: "var(--text)" }} />
           ))}
           <select value={form.status} onChange={(e) => setForm({ ...form, status: e.target.value })} className="px-4 py-3 rounded-xl text-sm outline-none"
-            style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", color: "white" }}>
+            style={{ background: "var(--surface-3)", border: "1px solid var(--border-strong)", color: "var(--text)" }}>
             {Object.entries(statusConfig).map(([key, sc]) => <option key={key} value={key}>{sc.emoji} {sc.label}</option>)}
           </select>
         </div>
@@ -133,7 +133,7 @@ export default function JobsPage() {
       {/* Cards / skeleton */}
       {loading ? (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {[0, 1, 2].map((i) => <div key={i} className="h-40 rounded-2xl animate-pulse" style={{ background: "rgba(255,255,255,0.03)" }} />)}
+          {[0, 1, 2].map((i) => <div key={i} className="h-40 rounded-2xl animate-pulse" style={{ background: "var(--surface)" }} />)}
         </div>
       ) : (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -143,7 +143,7 @@ export default function JobsPage() {
               return (
                 <motion.div key={job._id} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ delay: i * 0.05, duration: 0.4, ease: [0.22, 1, 0.36, 1] }} whileHover={{ y: -3 }}
-                  className="relative rounded-2xl p-5 group" style={{ background: `linear-gradient(135deg, ${sc.bg} 0%, rgba(255,255,255,0.02) 100%)`, border: `1px solid ${sc.border}` }}>
+                  className="relative rounded-2xl p-5 group" style={{ background: `linear-gradient(135deg, ${sc.bg} 0%, var(--surface-2) 100%)`, border: `1px solid ${sc.border}` }}>
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center gap-3 min-w-0">
                       <div className="w-11 h-11 rounded-xl flex items-center justify-center text-base font-bold flex-shrink-0" style={{ background: sc.bg, border: `1px solid ${sc.border}`, color: sc.color }}>
@@ -162,7 +162,7 @@ export default function JobsPage() {
                   <div className="flex items-center justify-between mb-3">
                     {editingId === job._id ? (
                       <div className="flex items-center gap-2">
-                        <select value={editStatus} onChange={(e) => setEditStatus(e.target.value)} className="px-2 py-1 text-xs rounded-lg outline-none" style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.1)", color: "white" }}>
+                        <select value={editStatus} onChange={(e) => setEditStatus(e.target.value)} className="px-2 py-1 text-xs rounded-lg outline-none" style={{ background: "var(--border-strong)", border: "1px solid var(--border-strong)", color: "var(--text)" }}>
                           {Object.entries(statusConfig).map(([key, s]) => <option key={key} value={key}>{s.emoji} {s.label}</option>)}
                         </select>
                         <motion.button whileHover={{ scale: 1.1 }} onClick={() => updateStatus(job._id)} className="w-6 h-6 rounded-full flex items-center justify-center" style={{ background: "rgba(34,197,94,0.2)", color: "#22c55e" }}>

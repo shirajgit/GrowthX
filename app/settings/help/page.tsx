@@ -67,7 +67,7 @@ function AccordionItem({ faq, index }: { faq: FAQ; index: number }) {
   const [open, setOpen] = useState(false);
   return (
     <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.04 }} className="overflow-hidden rounded-xl transition-all"
-      style={{ background: open ? "rgba(255,255,255,0.05)" : "rgba(255,255,255,0.02)", border: `1px solid ${open ? "rgba(255,255,255,0.1)" : "rgba(255,255,255,0.06)"}` }}>
+      style={{ background: open ? "var(--surface-3)" : "var(--surface-2)", border: `1px solid ${open ? "var(--border-strong)" : "var(--surface-hover)"}` }}>
       <button onClick={() => setOpen(!open)} className="w-full flex items-center justify-between px-5 py-4 text-left gap-4">
         <span className="text-[13.5px] font-medium text-white">{faq.q}</span>
         <motion.div animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.2 }} className="flex-shrink-0"><ChevronDown size={15} className="text-gray-500" /></motion.div>
@@ -76,7 +76,7 @@ function AccordionItem({ faq, index }: { faq: FAQ; index: number }) {
         {open && (
           <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}>
             <div className="px-5 pb-4">
-              <div className="h-px mb-4" style={{ background: "rgba(255,255,255,0.06)" }} />
+              <div className="h-px mb-4" style={{ background: "var(--surface-hover)" }} />
               <p className="text-sm text-gray-400 leading-relaxed">{faq.a}</p>
             </div>
           </motion.div>
@@ -95,7 +95,7 @@ export default function HelpCenterPage() {
   const visibleSections = activeSection ? helpSections.filter((s) => s.label === activeSection) : helpSections;
 
   return (
-    <div className="min-h-screen text-white" style={{ fontFamily: "'DM Sans', system-ui, sans-serif", background: "linear-gradient(160deg, #080808 0%, #0f0f13 50%, #0a0a10 100%)" }}>
+    <div className="min-h-screen text-white" style={{ fontFamily: "'DM Sans', system-ui, sans-serif", background: "var(--bg-grad)" }}>
       <div className="fixed top-0 right-0 w-[500px] h-[500px] pointer-events-none" style={{ background: "radial-gradient(circle, rgba(245,158,11,0.05) 0%, transparent 70%)" }} />
       <div className="fixed bottom-0 left-0 w-[400px] h-[400px] pointer-events-none" style={{ background: "radial-gradient(circle, rgba(96,165,250,0.04) 0%, transparent 70%)" }} />
 
@@ -118,8 +118,8 @@ export default function HelpCenterPage() {
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08 }} className="relative mb-8">
           <Search size={15} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600" />
           <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search help articles…"
-            className="w-full pl-11 pr-4 py-4 rounded-2xl text-sm outline-none transition-all" style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.09)", color: "white" }}
-            onFocus={(e) => (e.target.style.borderColor = "rgba(245,158,11,0.4)")} onBlur={(e) => (e.target.style.borderColor = "rgba(255,255,255,0.09)")} />
+            className="w-full pl-11 pr-4 py-4 rounded-2xl text-sm outline-none transition-all" style={{ background: "var(--surface-3)", border: "1px solid var(--border-strong)", color: "var(--text)" }}
+            onFocus={(e) => (e.target.style.borderColor = "rgba(245,158,11,0.4)")} onBlur={(e) => (e.target.style.borderColor = "var(--border-strong)")} />
         </motion.div>
 
         {/* Search results */}
@@ -131,7 +131,7 @@ export default function HelpCenterPage() {
             ) : (
               <div className="space-y-2">
                 {searchResults.map((f, i) => (
-                  <motion.div key={i} whileHover={{ y: -2 }} className="rounded-xl px-5 py-4" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)" }}>
+                  <motion.div key={i} whileHover={{ y: -2 }} className="rounded-xl px-5 py-4" style={{ background: "var(--surface)", border: "1px solid var(--border)" }}>
                     <p className="text-[10px] uppercase tracking-widest font-semibold mb-1.5" style={{ color: f.sectionColor }}>{f.sectionLabel}</p>
                     <p className="text-sm font-medium text-white mb-1">{f.q}</p>
                     <p className="text-xs text-gray-500 leading-relaxed line-clamp-2">{f.a}</p>
@@ -163,13 +163,13 @@ export default function HelpCenterPage() {
             {/* Section filter pills */}
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="flex flex-wrap gap-2 mb-6">
               <button onClick={() => setActiveSection(null)} className="px-3 py-1.5 rounded-full text-xs font-semibold transition-all"
-                style={{ background: !activeSection ? "rgba(255,255,255,0.1)" : "rgba(255,255,255,0.04)", border: `1px solid ${!activeSection ? "rgba(255,255,255,0.2)" : "rgba(255,255,255,0.07)"}`, color: !activeSection ? "white" : "#555" }}>All topics</button>
+                style={{ background: !activeSection ? "var(--border-strong)" : "var(--surface-3)", border: `1px solid ${!activeSection ? "var(--border-strong)" : "var(--border)"}`, color: !activeSection ? "var(--text)" : "#555" }}>All topics</button>
               {helpSections.map((s) => {
                 const Icon = s.icon;
                 const isActive = activeSection === s.label;
                 return (
                   <button key={s.label} onClick={() => setActiveSection(isActive ? null : s.label)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition-all"
-                    style={{ background: isActive ? `${s.color}14` : "rgba(255,255,255,0.04)", border: `1px solid ${isActive ? `${s.color}30` : "rgba(255,255,255,0.07)"}`, color: isActive ? s.color : "#555" }}>
+                    style={{ background: isActive ? `${s.color}14` : "var(--surface-3)", border: `1px solid ${isActive ? `${s.color}30` : "var(--border)"}`, color: isActive ? s.color : "#555" }}>
                     <Icon size={11} />{s.label}
                   </button>
                 );
@@ -185,7 +185,7 @@ export default function HelpCenterPage() {
                     <div className="flex items-center gap-3 mb-4">
                       <div className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: `${section.color}18`, border: `1px solid ${section.color}25` }}><Icon size={15} style={{ color: section.color }} /></div>
                       <p className="text-sm font-bold text-white">{section.label}</p>
-                      <div className="flex-1 h-px" style={{ background: "rgba(255,255,255,0.05)" }} />
+                      <div className="flex-1 h-px" style={{ background: "var(--surface-3)" }} />
                       <span className="text-[10px] text-gray-600">{section.faqs.length} articles</span>
                     </div>
                     <div className="space-y-2">{section.faqs.map((faq, fi) => <AccordionItem key={fi} faq={faq} index={fi} />)}</div>

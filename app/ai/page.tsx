@@ -40,9 +40,9 @@ function MessageBubble({ msg, index }: { msg: Message; index: number }) {
         className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5"
         style={{
           background: isUser
-            ? "rgba(255,255,255,0.08)"
+            ? "var(--border-strong)"
             : "linear-gradient(135deg, rgba(139,92,246,0.3), rgba(59,130,246,0.2))",
-          border: `1px solid ${isUser ? "rgba(255,255,255,0.1)" : "rgba(139,92,246,0.3)"}`,
+          border: `1px solid ${isUser ? "var(--border-strong)" : "rgba(139,92,246,0.3)"}`,
         }}
       >
         {isUser ? (
@@ -58,10 +58,10 @@ function MessageBubble({ msg, index }: { msg: Message; index: number }) {
           className="px-4 py-3 rounded-2xl text-sm leading-relaxed"
           style={{
             background: isUser
-              ? "rgba(255,255,255,0.08)"
+              ? "var(--border-strong)"
               : "rgba(139,92,246,0.08)",
-            border: `1px solid ${isUser ? "rgba(255,255,255,0.1)" : "rgba(139,92,246,0.15)"}`,
-            color: isUser ? "white" : "#e2e8f0",
+            border: `1px solid ${isUser ? "var(--border-strong)" : "rgba(139,92,246,0.15)"}`,
+            color: "var(--text)",
             borderRadius: isUser ? "18px 4px 18px 18px" : "4px 18px 18px 18px",
           }}
         >
@@ -191,7 +191,7 @@ export default function AIPage() {
       className="flex flex-col h-screen md:h-[calc(100vh-0px)] text-white"
       style={{
         fontFamily: "'DM Sans', system-ui, sans-serif",
-        background: "linear-gradient(160deg, #080808 0%, #0f0f13 50%, #0a0a10 100%)",
+        background: "var(--bg-grad)",
       }}
     >
       {/* Ambient */}
@@ -205,7 +205,7 @@ export default function AIPage() {
         initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
         className="flex items-center justify-between px-5 py-4 flex-shrink-0 relative"
-        style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}
+        style={{ borderBottom: "1px solid var(--border-soft)" }}
       >
         <div className="flex items-center gap-3">
           <div
@@ -238,8 +238,8 @@ export default function AIPage() {
               onClick={clearChat}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition-all"
               style={{
-                background: "rgba(255,255,255,0.04)",
-                border: "1px solid rgba(255,255,255,0.07)",
+                background: "var(--surface-3)",
+                border: "1px solid var(--border)",
                 color: "#6b7280",
               }}
             >
@@ -287,8 +287,8 @@ export default function AIPage() {
                   onClick={() => sendMessage(prompt)}
                   className="flex items-center gap-2 px-4 py-3 rounded-xl text-sm text-left transition-all"
                   style={{
-                    background: "rgba(255,255,255,0.03)",
-                    border: "1px solid rgba(255,255,255,0.07)",
+                    background: "var(--surface)",
+                    border: "1px solid var(--border)",
                     color: "#9ca3af",
                   }}
                 >
@@ -319,13 +319,13 @@ export default function AIPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
         className="px-4 sm:px-6 py-4 flex-shrink-0"
-        style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}
+        style={{ borderTop: "1px solid var(--border-soft)" }}
       >
         <div
           className="flex items-end gap-3 rounded-2xl px-4 py-3 transition-all"
           style={{
-            background: "rgba(255,255,255,0.04)",
-            border: "1px solid rgba(255,255,255,0.08)",
+            background: "var(--surface-3)",
+            border: "1px solid var(--border-strong)",
           }}
         >
           <textarea
@@ -356,8 +356,8 @@ export default function AIPage() {
             style={{
               background: input.trim() && !loading
                 ? "linear-gradient(135deg, rgba(139,92,246,0.5), rgba(59,130,246,0.4))"
-                : "rgba(255,255,255,0.04)",
-              border: `1px solid ${input.trim() && !loading ? "rgba(139,92,246,0.4)" : "rgba(255,255,255,0.06)"}`,
+                : "var(--surface-3)",
+              border: `1px solid ${input.trim() && !loading ? "rgba(139,92,246,0.4)" : "var(--surface-hover)"}`,
               color: input.trim() && !loading ? "#c4b5fd" : "#374151",
             }}
           >

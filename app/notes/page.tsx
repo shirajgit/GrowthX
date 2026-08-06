@@ -59,7 +59,7 @@ export default function NotesPage() {
   const filtered = notes.filter((n) => n.title.toLowerCase().includes(search.toLowerCase()) || n.content.toLowerCase().includes(search.toLowerCase()));
 
   return (
-    <div className="min-h-screen text-white p-4 sm:p-6" style={{ fontFamily: "'DM Sans', system-ui, sans-serif", background: "linear-gradient(160deg, #080808 0%, #0f0f13 50%, #0a0a10 100%)" }}>
+    <div className="min-h-screen text-white p-4 sm:p-6" style={{ fontFamily: "'DM Sans', system-ui, sans-serif", background: "var(--bg-grad)" }}>
       <div className="fixed top-0 right-0 w-[500px] h-[500px] pointer-events-none" style={{ background: "radial-gradient(circle, rgba(167,139,250,0.05) 0%, transparent 70%)" }} />
 
       {/* Header */}
@@ -82,7 +82,7 @@ export default function NotesPage() {
           <Search size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600" />
           <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search notes…"
             className="w-full pl-10 pr-4 py-3 rounded-xl text-sm outline-none focus:border-violet-500/40 transition-colors"
-            style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)", color: "white" }} />
+            style={{ background: "var(--surface)", border: "1px solid var(--border-soft)", color: "var(--text)" }} />
         </div>
         <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} onClick={() => setComposing((c) => !c)}
           className="flex items-center gap-2 px-4 py-3 rounded-xl text-sm font-semibold flex-shrink-0"
@@ -95,11 +95,11 @@ export default function NotesPage() {
       <AnimatePresence>
         {composing && (
           <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }}
-            className="rounded-2xl p-5 mb-6 overflow-hidden" style={{ background: "rgba(255,255,255,0.03)", border: `1px solid ${ACCENT}25` }}>
+            className="rounded-2xl p-5 mb-6 overflow-hidden" style={{ background: "var(--surface)", border: `1px solid ${ACCENT}25` }}>
             <input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} placeholder="Title…"
-              className="w-full px-4 py-3 rounded-xl text-base font-semibold outline-none mb-3" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", color: "white" }} />
+              className="w-full px-4 py-3 rounded-xl text-base font-semibold outline-none mb-3" style={{ background: "var(--surface-3)", border: "1px solid var(--border-strong)", color: "var(--text)" }} />
             <textarea value={form.content} onChange={(e) => setForm({ ...form, content: e.target.value })} placeholder="Write something…" rows={3}
-              className="w-full px-4 py-3 rounded-xl text-sm outline-none resize-none" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", color: "white" }} />
+              className="w-full px-4 py-3 rounded-xl text-sm outline-none resize-none" style={{ background: "var(--surface-3)", border: "1px solid var(--border-strong)", color: "var(--text)" }} />
             <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }} onClick={addNote}
               className="mt-3 flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold" style={{ background: `linear-gradient(135deg, ${ACCENT}33, ${ACCENT}1a)`, border: `1px solid ${ACCENT}50`, color: "#c4b5fd" }}>
               <Plus size={15} /> Save Note
@@ -111,7 +111,7 @@ export default function NotesPage() {
       {/* Grid / skeleton */}
       {loading ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {[0, 1, 2, 3, 4, 5].map((i) => <div key={i} className="h-40 rounded-2xl animate-pulse" style={{ background: "rgba(255,255,255,0.03)" }} />)}
+          {[0, 1, 2, 3, 4, 5].map((i) => <div key={i} className="h-40 rounded-2xl animate-pulse" style={{ background: "var(--surface)" }} />)}
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -123,7 +123,7 @@ export default function NotesPage() {
               return (
                 <motion.div key={note._id} layout initial={{ opacity: 0, y: 16, scale: 0.97 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ delay: i * 0.04, duration: 0.4, ease: [0.22, 1, 0.36, 1] }} whileHover={{ y: -3 }}
-                  className="relative rounded-2xl p-5 group cursor-pointer" style={{ background: `linear-gradient(135deg, ${accent.bg} 0%, rgba(255,255,255,0.02) 100%)`, border: `1px solid ${accent.border}` }}
+                  className="relative rounded-2xl p-5 group cursor-pointer" style={{ background: `linear-gradient(135deg, ${accent.bg} 0%, var(--surface-2) 100%)`, border: `1px solid ${accent.border}` }}
                   onClick={() => setExpandedId(isExpanded ? null : note._id)}>
                   <div className="absolute top-0 left-6 right-6 h-px" style={{ background: `linear-gradient(90deg, transparent, ${accent.color}40, transparent)` }} />
                   <div className="flex items-start justify-between mb-3">

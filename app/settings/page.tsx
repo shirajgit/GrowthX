@@ -51,7 +51,7 @@ function StatPill({ label, value, icon: Icon, delta, color, index, loading }: an
     <motion.div
       initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + index * 0.08, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
       whileHover={{ y: -2 }} className="relative flex-1 min-w-[90px] rounded-2xl overflow-hidden p-4"
-      style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)", border: "1px solid rgba(255,255,255,0.08)" }}>
+      style={{ background: "linear-gradient(135deg, var(--surface-hover) 0%, var(--surface-2) 100%)", border: "1px solid var(--border-strong)" }}>
       <div className="absolute -top-6 -right-6 w-16 h-16 rounded-full blur-2xl opacity-20" style={{ background: color }} />
       <div className="flex items-center justify-between mb-3">
         <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: `${color}1f`, border: `1px solid ${color}40` }}>
@@ -82,7 +82,7 @@ function MenuRow({ item, index, onClick }: any) {
       initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.35 + index * 0.05, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
       onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} onClick={handleClick}
       className="w-full flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all duration-200 group text-left"
-      style={{ background: hovered && !soon ? "rgba(255,255,255,0.05)" : "transparent", cursor: soon ? "default" : "pointer" }}>
+      style={{ background: hovered && !soon ? "var(--surface-3)" : "transparent", cursor: soon ? "default" : "pointer" }}>
       <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: `${item.color}18`, border: `1px solid ${item.color}30` }}>
         <Icon size={16} style={{ color: item.color }} />
       </div>
@@ -91,7 +91,7 @@ function MenuRow({ item, index, onClick }: any) {
         <p className="text-[11px] text-gray-500 truncate">{item.sub}</p>
       </div>
       {soon ? (
-        <span className="text-[9px] font-bold px-2 py-0.5 rounded-full tracking-widest uppercase flex-shrink-0" style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "#6b7280" }}>Soon</span>
+        <span className="text-[9px] font-bold px-2 py-0.5 rounded-full tracking-widest uppercase flex-shrink-0" style={{ background: "var(--surface-3)", border: "1px solid var(--border-strong)", color: "#6b7280" }}>Soon</span>
       ) : (
         <motion.div animate={{ x: hovered ? 2 : 0 }} transition={{ duration: 0.15 }}>
           <ChevronRight size={15} className="text-gray-600 group-hover:text-gray-400 transition-colors" />
@@ -140,7 +140,7 @@ export default function ProfilePage() {
 
   if (!user || !mounted) {
     return (
-      <div className="h-screen flex items-center justify-center" style={{ background: "#080808" }}>
+      <div className="h-screen flex items-center justify-center" style={{ background: "var(--bg)" }}>
         <div className="w-8 h-8 rounded-full border-2 border-white/10 border-t-white/60 animate-spin" />
       </div>
     );
@@ -156,7 +156,7 @@ export default function ProfilePage() {
   ];
 
   return (
-    <div className="min-h-screen text-white relative" style={{ fontFamily: "'DM Sans', system-ui, sans-serif", background: "linear-gradient(160deg, #080808 0%, #0f0f13 50%, #0a0a10 100%)" }}>
+    <div className="min-h-screen text-white relative" style={{ fontFamily: "'DM Sans', system-ui, sans-serif", background: "var(--bg-grad)" }}>
       <div className="absolute top-0 right-0 w-[500px] h-[500px] pointer-events-none" style={{ background: "radial-gradient(circle, rgba(139,92,246,0.06) 0%, transparent 70%)" }} />
       <div className="absolute bottom-0 left-0 w-[400px] h-[400px] pointer-events-none" style={{ background: "radial-gradient(circle, rgba(59,130,246,0.04) 0%, transparent 70%)" }} />
 
@@ -175,14 +175,14 @@ export default function ProfilePage() {
         {/* Hero card */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
           className="relative rounded-3xl overflow-hidden mb-4 p-6"
-          style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.02) 100%)", border: "1px solid rgba(255,255,255,0.09)", boxShadow: "0 24px 60px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.08)" }}>
+          style={{ background: "linear-gradient(135deg, var(--border) 0%, var(--surface-2) 100%)", border: "1px solid var(--border-strong)", boxShadow: "0 24px 60px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.08)" }}>
           <div className="absolute top-0 left-0 right-0 h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent)" }} />
           <div className="flex items-center gap-5">
             <div className="relative flex-shrink-0">
               <div className="w-[72px] h-[72px] rounded-2xl flex items-center justify-center overflow-hidden" style={{ background: "linear-gradient(135deg, rgba(139,92,246,0.3), rgba(59,130,246,0.2))", boxShadow: "0 0 0 1px rgba(255,255,255,0.1), 0 8px 24px rgba(139,92,246,0.2)" }}>
                 {user.imageUrl ? <img src={user.imageUrl} alt="avatar" className="w-full h-full object-cover rounded-2xl" /> : <span className="text-2xl font-bold text-white">{(user.firstName || "U")[0]}</span>}
               </div>
-              <div className="absolute -bottom-0.5 -right-0.5 w-4 h-4 rounded-full border-2 border-[#0f0f13]" style={{ background: "#22c55e" }} />
+              <div className="absolute -bottom-0.5 -right-0.5 w-4 h-4 rounded-full border-2" style={{ background: "#22c55e", borderColor: "var(--bg)" }} />
             </div>
             <div className="flex-1 min-w-0">
               <h2 className="text-xl font-bold text-white tracking-tight truncate">{user.fullName || user.firstName || "User"}</h2>
@@ -202,9 +202,9 @@ export default function ProfilePage() {
         {menuSections.map((section, si) => (
           <motion.div key={section.label} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + si * 0.07, duration: 0.45, ease: [0.22, 1, 0.36, 1] }} className="mb-3">
             <p className="text-[10.5px] font-semibold tracking-[0.2em] uppercase text-gray-600 px-1 mb-2">{section.label}</p>
-            <div className="rounded-2xl overflow-hidden" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)" }}>
+            <div className="rounded-2xl overflow-hidden" style={{ background: "var(--surface)", border: "1px solid var(--border)" }}>
               {section.items.map((item, ii) => (
-                <div key={item.label} style={{ borderTop: ii > 0 ? "1px solid rgba(255,255,255,0.05)" : "none" }}>
+                <div key={item.label} style={{ borderTop: ii > 0 ? "1px solid var(--border-soft)" : "none" }}>
                   <MenuRow item={item} index={si * 3 + ii} onClick={() => (item.action === "profile" ? openUserProfile() : undefined)} />
                 </div>
               ))}

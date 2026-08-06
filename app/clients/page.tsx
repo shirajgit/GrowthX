@@ -81,7 +81,7 @@ export default function ClientsPage() {
       className="min-h-screen text-white p-4 sm:p-6"
       style={{
         fontFamily: "'DM Sans', system-ui, sans-serif",
-        background: "linear-gradient(160deg, #080808 0%, #0f0f13 50%, #0a0a10 100%)",
+        background: "var(--bg-grad)",
       }}
     >
       {/* Ambient */}
@@ -101,7 +101,7 @@ export default function ClientsPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
         className="rounded-2xl p-5 mb-6"
-        style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)" }}
+        style={{ background: "var(--surface)", border: "1px solid var(--border)" }}
       >
         <p className="text-[11px] tracking-[0.2em] uppercase text-gray-600 font-semibold mb-4">Add Client</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
@@ -117,12 +117,12 @@ export default function ClientsPage() {
               placeholder={f.placeholder}
               className="px-4 py-3 rounded-xl text-sm outline-none transition-all"
               style={{
-                background: "rgba(255,255,255,0.04)",
-                border: "1px solid rgba(255,255,255,0.08)",
-                color: "white",
+                background: "var(--surface-3)",
+                border: "1px solid var(--border-strong)",
+                color: "var(--text)",
               }}
               onFocus={(e) => (e.target.style.borderColor = "rgba(236,72,153,0.4)")}
-              onBlur={(e) => (e.target.style.borderColor = "rgba(255,255,255,0.08)")}
+              onBlur={(e) => (e.target.style.borderColor = "var(--border-strong)")}
             />
           ))}
           <select
@@ -130,9 +130,9 @@ export default function ClientsPage() {
             onChange={(e) => setForm({ ...form, status: e.target.value })}
             className="px-4 py-3 rounded-xl text-sm outline-none"
             style={{
-              background: "rgba(255,255,255,0.04)",
-              border: "1px solid rgba(255,255,255,0.08)",
-              color: "white",
+              background: "var(--surface-3)",
+              border: "1px solid var(--border-strong)",
+              color: "var(--text)",
             }}
           >
             <option value="active">Active</option>
@@ -170,9 +170,9 @@ export default function ClientsPage() {
           placeholder="Search clients…"
           className="w-full pl-10 pr-4 py-3 rounded-xl text-sm outline-none"
           style={{
-            background: "rgba(255,255,255,0.03)",
-            border: "1px solid rgba(255,255,255,0.06)",
-            color: "white",
+            background: "var(--surface)",
+            border: "1px solid var(--border-soft)",
+            color: "var(--text)",
           }}
         />
       </motion.div>
@@ -181,7 +181,7 @@ export default function ClientsPage() {
       {loading && (
         <div className="space-y-2">
           {[0, 1, 2, 3, 4].map((i) => (
-            <div key={i} className="h-14 rounded-xl animate-pulse" style={{ background: "rgba(255,255,255,0.03)" }} />
+            <div key={i} className="h-14 rounded-xl animate-pulse" style={{ background: "var(--surface)" }} />
           ))}
         </div>
       )}
@@ -192,11 +192,11 @@ export default function ClientsPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.25 }}
         className={`${loading ? "hidden" : "hidden md:block"} rounded-2xl overflow-hidden`}
-        style={{ border: "1px solid rgba(255,255,255,0.06)" }}
+        style={{ border: "1px solid var(--border-soft)" }}
       >
         <table className="w-full text-sm">
           <thead>
-            <tr style={{ background: "rgba(255,255,255,0.03)", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+            <tr style={{ background: "var(--surface)", borderBottom: "1px solid var(--border-soft)" }}>
               {["Client", "Company", "Email", "Status", "Added", ""].map((h) => (
                 <th key={h} className="text-left px-5 py-3.5 text-[11px] tracking-[0.15em] uppercase text-gray-600 font-semibold">
                   {h}
@@ -215,7 +215,7 @@ export default function ClientsPage() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, x: -20 }}
                     transition={{ delay: i * 0.04 }}
-                    style={{ borderBottom: "1px solid rgba(255,255,255,0.04)" }}
+                    style={{ borderBottom: "1px solid var(--border-soft)" }}
                     className="group hover:bg-white/[0.02] transition-colors"
                   >
                     <td className="px-5 py-4">
@@ -274,7 +274,7 @@ export default function ClientsPage() {
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ delay: i * 0.05 }}
                 className="rounded-2xl p-4"
-                style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)" }}
+                style={{ background: "var(--surface)", border: "1px solid var(--border)" }}
               >
                 <div className="flex justify-between items-start mb-3">
                   <div className="flex items-center gap-3">

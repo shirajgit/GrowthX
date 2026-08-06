@@ -4,6 +4,7 @@ import "./globals.css";
 import { ClerkProvider, useUser } from "@clerk/nextjs";
 import Sidebar from "@/components/Sidebar";
 import LandingPage from "@/components/LandingPage";
+import ThemeProvider from "@/components/ThemeProvider";
 import { motion, MotionConfig } from "framer-motion";
 import { useEffect } from "react";
 
@@ -17,7 +18,7 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
 
   if (!isLoaded) {
     return (
-      <div className="h-screen flex items-center justify-center" style={{ background: "#080808" }}>
+      <div className="h-screen flex items-center justify-center" style={{ background: "var(--bg)" }}>
         <div className="w-8 h-8 rounded-full border-2 border-white/10 border-t-white/40 animate-spin" />
       </div>
     );
@@ -28,7 +29,7 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
       className="min-h-screen text-white relative"
       style={{
         fontFamily: "'DM Sans', system-ui, sans-serif",
-        background: "#080808",
+        background: "var(--bg)",
       }}
     >
       {/* Global ambient glows */}
@@ -62,10 +63,16 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <title>GrowthX</title>
         <meta name="description" content="Your all-in-one productivity workspace" />
+        {/* Set theme before paint to avoid a flash of the wrong theme */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('gx-theme');if(!t){t=window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';}document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','dark');}})();`,
+          }}
+        />
         <link rel="icon" href="/favicon.ico" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -76,9 +83,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body style={{ margin: 0, padding: 0 }}>
         <ClerkProvider>
-          <MotionConfig reducedMotion="user">
-            <LayoutContent>{children}</LayoutContent>
-          </MotionConfig>
+          <ThemeProvider>
+            <MotionConfig reducedMotion="user">
+              <LayoutContent>{children}</LayoutContent>
+            </MotionConfig>
+          </ThemeProvider>
         </ClerkProvider>
       </body>
     </html>
